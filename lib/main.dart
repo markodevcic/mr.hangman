@@ -12,9 +12,8 @@ class Hangman extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Hangman',
       theme: ThemeData.dark(),
-      home: const MainScreen(title: 'Hangman'),
+      home: MainScreen(),
     );
   }
 }

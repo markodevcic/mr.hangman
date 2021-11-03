@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hangman/game_logic.dart';
 import 'package:hangman/game_on_screen/game_on_screen.dart';
+import 'package:hangman/main_screen/main_screen.dart';
 
 class PlayerInputWordScreen extends StatelessWidget {
   PlayerInputWordScreen({Key? key}) : super(key: key);
@@ -20,69 +21,90 @@ class PlayerInputWordScreen extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        body: SafeArea(
+          child: Stack(
             children: [
-              const Image(
-                image: AssetImage('images/mr. hangman questions.png'),
-                fit: BoxFit.fill,
-                height: 250,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextFormField(
-                  controller: controller,
-                  maxLength: 40,
-                  onFieldSubmitted: (value) {
-                    if (value.isEmpty ||
-                        value.contains(RegExp(r'[^a-zA-Z ]'))) {
-                      showDialog(
-                          context: context,
-                          builder: (_) => AlertDialog(
-                                title: Text(
-                                  'Only letters from \'a\' to \'z\' and space is permitted!',
-                                  style: GoogleFonts.pressStart2p(height: 1.2),
-                                ),
-                                actions: [
-                                  TextButton(
-                                      style: TextButton.styleFrom(
-                                        primary: Colors.white,
-                                      ),
-                                      onPressed: () {
-                                        controller.clear();
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('Get it',
-                                          style: GoogleFonts.pressStart2p())),
-                                ],
-                              ));
-                    } else {
-                      String word = value.toUpperCase();
-                      String hiddenWord = gameLogic.hideWord(word);
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => GameOnScreen(
-                              word: word, hiddenWord: hiddenWord)));
-                    }
-                  },
-                  style: GoogleFonts.pressStart2p(),
-                  decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    hintText: 'Only a-z and space',
-                    label: const Center(
-                        child: Text('Type new phrase to guess',
-                            textAlign: TextAlign.center)),
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.white54, width: 2),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
+              Positioned(
+                child: IconButton(
+                  icon: Icon(
+                    Icons.home_rounded,
+                    color: Colors.grey.shade600,
                   ),
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => MainScreen()));
+                  },
+                ),
+                left: 10,
+                top: 10,
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: const Image(
+                        image: AssetImage('images/mr. hangman questions.png'),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: TextFormField(
+                        controller: controller,
+                        maxLength: 40,
+                        onFieldSubmitted: (value) {
+                          if (value.isEmpty ||
+                              value.contains(RegExp(r'[^a-zA-Z ]'))) {
+                            showDialog(
+                                context: context,
+                                builder: (_) => AlertDialog(
+                                      title: Text(
+                                        'Only letters from \'a\' to \'z\' and space are permitted!',
+                                        style: GoogleFonts.pressStart2p(
+                                            fontSize: 18, height: 1.2),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                            style: TextButton.styleFrom(
+                                              primary: Colors.white,
+                                            ),
+                                            onPressed: () {
+                                              controller.clear();
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text('Get it',
+                                                style: GoogleFonts.pressStart2p(
+                                                    fontSize: 18))),
+                                      ],
+                                    ));
+                          } else {
+                            String word = value.toUpperCase();
+                            String hiddenWord = gameLogic.hideWord(word);
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => GameOnScreen(
+                                        word: word, hiddenWord: hiddenWord)));
+                          }
+                        },
+                        style: GoogleFonts.pressStart2p(),
+                        decoration: InputDecoration(
+                          label: Text('Type new phrase to guess',
+                              textAlign: TextAlign.center),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.white54, width: 2),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

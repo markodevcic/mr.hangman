@@ -22,23 +22,12 @@ class StartGameButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         onTap: onTapped,
         child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 20),
+          margin: const EdgeInsets.symmetric(vertical: 15),
           width: MediaQuery.of(context).size.width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                buttonLabel,
-                style: GoogleFonts.pressStart2p(fontSize: 18),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                'GAME',
-                style: GoogleFonts.pressStart2p(fontSize: 18),
-              ),
-            ],
+          child: Text(
+            '$buttonLabel\nGAME',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.4),
           ),
         ),
       ),
