@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:hangman/game_logic.dart';
-import 'package:hangman/main_screen/main_screen_components.dart';
+import 'package:hangman/main_screen/reusable_buttons.dart';
 import 'package:hangman/player_input_word_screen/player_input_word_screen.dart';
 
 class GameOnScreen extends StatefulWidget {
@@ -56,32 +56,33 @@ class _GameOnScreenState extends State<GameOnScreen> {
       onWillPop: () async {
         bool willLeave = false;
         await showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-                  title: Text(
-                    'Are you going to abandon Mr. Hangman?',
-                    style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.2),
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Text(
+              'Are you going to abandon Mr. Hangman?',
+              style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.2),
+            ),
+            actions: [
+              TextButton(
+                  style: TextButton.styleFrom(
+                    primary: Colors.white,
                   ),
-                  actions: [
-                    TextButton(
-                        style: TextButton.styleFrom(
-                          primary: Colors.white,
-                        ),
-                        onPressed: () {
-                          willLeave = true;
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('Sorry',
-                            style: GoogleFonts.pressStart2p(fontSize: 18))),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.red.shade600,
-                        ),
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text('Never!',
-                            style: GoogleFonts.pressStart2p(fontSize: 18)))
-                  ],
-                ));
+                  onPressed: () {
+                    willLeave = true;
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Sorry',
+                      style: GoogleFonts.pressStart2p(fontSize: 18))),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red.shade600,
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Never!',
+                      style: GoogleFonts.pressStart2p(fontSize: 18)))
+            ],
+          ),
+        );
         return willLeave;
       },
       child: Container(
