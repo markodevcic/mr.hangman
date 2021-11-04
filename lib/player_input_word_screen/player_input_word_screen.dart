@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:hangman/game_logic.dart';
 import 'package:hangman/game_on_screen/game_on_screen.dart';
 import 'package:hangman/main_screen/main_screen.dart';
+import 'package:hangman/main_screen/reusable_buttons.dart';
 
 class PlayerInputWordScreen extends StatelessWidget {
   PlayerInputWordScreen({Key? key}) : super(key: key);
@@ -19,7 +21,7 @@ class PlayerInputWordScreen extends StatelessWidget {
           context: context,
           builder: (_) => AlertDialog(
             title: Text(
-              'Are you going to abandon Mr. Hangman?',
+              'Leave Mr. Hangman? Or go to main menu?',
               style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.2),
             ),
             actions: [
@@ -31,46 +33,31 @@ class PlayerInputWordScreen extends StatelessWidget {
                     willLeave = true;
                     Navigator.of(context).pop();
                   },
-                  child: Text('Sorry',
-                      style: GoogleFonts.pressStart2p(fontSize: 18))),
+                  child: Text('Leave',
+                      style: GoogleFonts.pressStart2p(fontSize: 16))),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.red.shade600,
                   ),
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Never!',
-                      style: GoogleFonts.pressStart2p(fontSize: 18)))
+                  onPressed: () => Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainScreen()),
+                      (route) => false),
+                  child: Text('Menu',
+                      style: GoogleFonts.pressStart2p(fontSize: 16)))
             ],
           ),
         );
         return willLeave;
       },
       child: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/background.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
+        decoration: kBackgroundImage,
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: SafeArea(
             child: Stack(
               children: [
-                Positioned(
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.home_rounded,
-                      color: Colors.grey.shade600,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => MainScreen()));
-                    },
-                  ),
-                  left: 10,
-                  top: 10,
-                ),
+                BackToMainMenuButton(),
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -115,10 +102,16 @@ class PlayerInputWordScreen extends StatelessWidget {
                             } else {
                               String word = value.toUpperCase();
                               String hiddenWord = gameLogic.hideWord(word);
-                              Navigator.of(context).pushReplacement(
+                              String gameType = 'NEW 2 PLAYER';
+                              Navigator.pushAndRemoveUntil(
+                                  context,
                                   MaterialPageRoute(
                                       builder: (context) => GameOnScreen(
-                                          word: word, hiddenWord: hiddenWord)));
+                                            word: word,
+                                            hiddenWord: hiddenWord,
+                                            gameType: gameType,
+                                          )),
+                                  (route) => false);
                             }
                           },
                           style: GoogleFonts.pressStart2p(),

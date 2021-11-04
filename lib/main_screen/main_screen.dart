@@ -6,19 +6,11 @@ import 'package:hangman/game_on_screen/game_on_screen.dart';
 import 'package:hangman/main_screen/reusable_buttons.dart';
 import 'package:hangman/player_input_word_screen/player_input_word_screen.dart';
 
-class MainScreen extends StatefulWidget {
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
+import '../text_generator.dart';
 
-class _MainScreenState extends State<MainScreen> {
+class MainScreen extends StatelessWidget {
   final GameLogic gameLogic = GameLogic();
-
-  @override
-  void didChangeDependencies() {
-    precacheImage(AssetImage('images/background.jpg'), context);
-    super.didChangeDependencies();
-  }
+  final TextGenerator textGenerator = TextGenerator();
 
   @override
   Widget build(BuildContext context) {
@@ -42,26 +34,21 @@ class _MainScreenState extends State<MainScreen> {
                     Navigator.of(context).pop();
                   },
                   child: Text('Sorry',
-                      style: GoogleFonts.pressStart2p(fontSize: 18))),
+                      style: GoogleFonts.pressStart2p(fontSize: 16))),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.red.shade600,
                   ),
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text('Never!',
-                      style: GoogleFonts.pressStart2p(fontSize: 18)))
+                      style: GoogleFonts.pressStart2p(fontSize: 16)))
             ],
           ),
         );
         return willLeave;
       },
       child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/background.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
+        decoration: kBackgroundImage,
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -87,7 +74,7 @@ class _MainScreenState extends State<MainScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Text(
-                      'Save Mr. Hangman from the evil hands!',
+                      textGenerator.saveMrHangman(),
                       style:
                           GoogleFonts.pressStart2p(fontSize: 20, height: 1.5),
                       textAlign: TextAlign.center,
@@ -95,17 +82,22 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
                 StartGameButton(
-                  buttonLabel: 'QUICK',
+                  buttonLabelFirstLine: 'QUICK',
+                  buttonLabelSecondLine: 'GAME',
                   onTapped: () {
                     String word = gameLogic.quickGameWordGenerator();
                     String hiddenWord = gameLogic.hideWord(word);
+                    String gameType = 'NEW QUICK';
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) =>
-                            GameOnScreen(word: word, hiddenWord: hiddenWord)));
+                        builder: (context) => GameOnScreen(
+                            word: word,
+                            hiddenWord: hiddenWord,
+                            gameType: gameType)));
                   },
                 ),
                 StartGameButton(
-                  buttonLabel: '2 PLAYER',
+                  buttonLabelFirstLine: '2 PLAYER',
+                  buttonLabelSecondLine: 'GAME',
                   onTapped: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => PlayerInputWordScreen()));
