@@ -12,12 +12,7 @@ class GameOnScreen extends StatefulWidget {
   String hiddenWord;
   final String gameType;
 
-  GameOnScreen(
-      {Key? key,
-      required this.word,
-      required this.hiddenWord,
-      required this.gameType})
-      : super(key: key);
+  GameOnScreen({Key? key, required this.word, required this.hiddenWord, required this.gameType}) : super(key: key);
 
   final GameLogic gameLogic = GameLogic();
   List<String> disabledLetters = [];
@@ -33,38 +28,7 @@ class _GameOnScreenState extends State<GameOnScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        bool willLeave = false;
-        await showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: Text(
-              'Are you going to abandon Mr. Hangman?',
-              style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.2),
-            ),
-            actions: [
-              TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
-                  ),
-                  onPressed: () {
-                    willLeave = true;
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Sorry',
-                      style: GoogleFonts.pressStart2p(fontSize: 16))),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.red.shade600,
-                  ),
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Never!',
-                      style: GoogleFonts.pressStart2p(fontSize: 16)))
-            ],
-          ),
-        );
-        return willLeave;
-      },
+      onWillPop: () async => false,
       child: Container(
         decoration: kBackgroundImage,
         child: Scaffold(
@@ -72,7 +36,6 @@ class _GameOnScreenState extends State<GameOnScreen> {
           body: SafeArea(
             child: Stack(
               children: [
-                widget.backToMainMenuButton,
                 Center(
                   child: Column(
                     children: [
@@ -88,18 +51,13 @@ class _GameOnScreenState extends State<GameOnScreen> {
                       Text(
                         widget.hiddenWord,
                         textAlign: TextAlign.center,
-                        style:
-                            GoogleFonts.pressStart2p(fontSize: 18, height: 1.5),
+                        style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.5),
                       ),
                       Container(
                         child: Column(
                           children: [
-                            if (widget.wrongGuesses == 6)
-                              GameEndMessage(
-                                  message: 'You failed to save Mr. Hangman!'),
-                            if (widget.wrongGuesses == 7)
-                              GameEndMessage(
-                                  message: 'You set Mr. Hangman free!'),
+                            if (widget.wrongGuesses == 6) GameEndMessage(message: 'You failed to save Mr. Hangman!'),
+                            if (widget.wrongGuesses == 7) GameEndMessage(message: 'You set Mr. Hangman free!'),
                             if (widget.wrongGuesses < 6)
                               Padding(
                                 padding: EdgeInsets.only(top: 10),
@@ -110,37 +68,24 @@ class _GameOnScreenState extends State<GameOnScreen> {
                                   children: [
                                     for (var char in widget.alphabet)
                                       MaterialButton(
-                                        child: Text(char,
-                                            style: GoogleFonts.pressStart2p(
-                                                fontSize: 14)),
+                                        child: Text(char, style: GoogleFonts.pressStart2p(fontSize: 14)),
                                         minWidth: 60,
-                                        onPressed: (widget.disabledLetters
-                                                .contains(char))
+                                        onPressed: (widget.disabledLetters.contains(char))
                                             ? null
                                             : () {
                                                 (widget.word.contains(char))
                                                     ? setState(() {
-                                                        widget.disabledLetters
-                                                            .add(char);
-                                                        widget.hiddenWord = widget
-                                                            .gameLogic
-                                                            .revealHiddenWord(
-                                                                widget
-                                                                    .hiddenWord,
-                                                                widget.word,
-                                                                char);
-                                                        if (widget.hiddenWord ==
-                                                            widget.word) {
-                                                          widget.wrongGuesses =
-                                                              7;
+                                                        widget.disabledLetters.add(char);
+                                                        widget.hiddenWord = widget.gameLogic
+                                                            .revealHiddenWord(widget.hiddenWord, widget.word, char);
+                                                        if (widget.hiddenWord == widget.word) {
+                                                          widget.wrongGuesses = 7;
                                                         }
                                                       })
                                                     : setState(
                                                         () {
-                                                          widget.disabledLetters
-                                                              .add(char);
-                                                          widget.wrongGuesses +=
-                                                              1;
+                                                          widget.disabledLetters.add(char);
+                                                          widget.wrongGuesses += 1;
                                                         },
                                                       );
                                               },
@@ -148,8 +93,7 @@ class _GameOnScreenState extends State<GameOnScreen> {
                                   ],
                                 ),
                               ),
-                            if (widget.wrongGuesses == 6 ||
-                                widget.wrongGuesses == 7)
+                            if (widget.wrongGuesses == 6 || widget.wrongGuesses == 7)
                               Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -158,39 +102,27 @@ class _GameOnScreenState extends State<GameOnScreen> {
                                       buttonLabelSecondLine: 'GAME',
                                       onTapped: (widget.gameType == 'NEW QUICK')
                                           ? () {
-                                              String word = widget.gameLogic
-                                                  .quickGameWordGenerator();
-                                              String hiddenWord = widget
-                                                  .gameLogic
-                                                  .hideWord(word);
+                                              String word = widget.gameLogic.quickGameWordGenerator();
+                                              String hiddenWord = widget.gameLogic.hideWord(word);
                                               Navigator.pushAndRemoveUntil(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          GameOnScreen(
-                                                              word: word,
-                                                              hiddenWord:
-                                                                  hiddenWord,
-                                                              gameType: widget
-                                                                  .gameType)),
+                                                      builder: (context) => GameOnScreen(
+                                                          word: word,
+                                                          hiddenWord: hiddenWord,
+                                                          gameType: widget.gameType)),
                                                   (route) => false);
                                             }
                                           : () => Navigator.pushAndRemoveUntil(
                                               context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PlayerInputWordScreen()),
+                                              MaterialPageRoute(builder: (context) => PlayerInputWordScreen()),
                                               (route) => false)),
                                   StartGameButton(
                                     buttonLabelFirstLine: 'MAIN',
                                     buttonLabelSecondLine: 'MENU',
                                     onTapped: () {
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  MainScreen()),
-                                          (route) => false);
+                                      Navigator.pushAndRemoveUntil(context,
+                                          MaterialPageRoute(builder: (context) => MainScreen()), (route) => false);
                                     },
                                   ),
                                 ],

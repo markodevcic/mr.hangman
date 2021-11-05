@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:hangman/game_logic.dart';
 import 'package:hangman/game_on_screen/game_on_screen.dart';
-import 'package:hangman/main_screen/main_screen.dart';
 import 'package:hangman/main_screen/reusable_buttons.dart';
 
 class PlayerInputWordScreen extends StatelessWidget {
@@ -15,41 +14,7 @@ class PlayerInputWordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        bool willLeave = false;
-        await showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: Text(
-              'Leave Mr. Hangman? Or go to main menu?',
-              style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.2),
-            ),
-            actions: [
-              TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
-                  ),
-                  onPressed: () {
-                    willLeave = true;
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Leave',
-                      style: GoogleFonts.pressStart2p(fontSize: 16))),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.red.shade600,
-                  ),
-                  onPressed: () => Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => MainScreen()),
-                      (route) => false),
-                  child: Text('Menu',
-                      style: GoogleFonts.pressStart2p(fontSize: 16)))
-            ],
-          ),
-        );
-        return willLeave;
-      },
+      onWillPop: () async => false,
       child: Container(
         decoration: kBackgroundImage,
         child: Scaffold(
