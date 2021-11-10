@@ -29,9 +29,12 @@ class MainScreen extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             title: FittedBox(
-              child: Text(
-                'Mr. Hangman',
-                style: GoogleFonts.pressStart2p(fontSize: 28),
+              child: Hero(
+                tag: 'splash_logo',
+                child: Text(
+                  'Mr. Hangman',
+                  style: GoogleFonts.pressStart2p(fontSize: 28),
+                ),
               ),
             ),
             centerTitle: true,
@@ -59,11 +62,14 @@ class MainScreen extends StatelessWidget {
                   buttonLabelFirstLine: 'QUICK',
                   buttonLabelSecondLine: 'GAME',
                   onTapped: () {
-                    String word = gameLogic.quickGameWordGenerator();
+                    List term = gameLogic.quickGameWordGenerator();
+                    String word = term[0].toUpperCase();
+                    String meaning = term[1];
                     String hiddenWord = gameLogic.hideWord(word);
                     String gameType = 'NEW QUICK';
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => GameOnScreen(word: word, hiddenWord: hiddenWord, gameType: gameType)));
+                        builder: (context) =>
+                            GameOnScreen(word: word, meaning: meaning, hiddenWord: hiddenWord, gameType: gameType)));
                   },
                 ),
                 StartGameButton(

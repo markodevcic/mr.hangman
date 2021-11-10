@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'main_screen/main_screen.dart';
+import 'package:hangman/splash_screen/splash_screen.dart';
 
 void main() {
   runApp(const Hangman());
@@ -13,7 +12,7 @@ class Hangman extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(),
-      home: MainScreen(),
+      home: SplashScreen(),
     );
   }
 }

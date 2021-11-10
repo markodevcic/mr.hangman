@@ -37,17 +37,18 @@ class PlayerInputWordScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: TextFormField(
                           controller: controller,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          keyboardType: TextInputType.text,
                           maxLength: 40,
                           onFieldSubmitted: (value) {
-                            if (value.isEmpty ||
-                                value.contains(RegExp(r'[^a-zA-Z ]'))) {
+                            if (value.isEmpty || value.contains(RegExp(r'[^a-zA-Z ]'))) {
                               showDialog(
                                   context: context,
                                   builder: (_) => AlertDialog(
                                         title: Text(
                                           'Only letters from \'a\' to \'z\' and space are permitted!',
-                                          style: GoogleFonts.pressStart2p(
-                                              fontSize: 18, height: 1.2),
+                                          style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.2),
                                         ),
                                         actions: [
                                           TextButton(
@@ -58,10 +59,7 @@ class PlayerInputWordScreen extends StatelessWidget {
                                                 controller.clear();
                                                 Navigator.of(context).pop();
                                               },
-                                              child: Text('Get it',
-                                                  style:
-                                                      GoogleFonts.pressStart2p(
-                                                          fontSize: 18))),
+                                              child: Text('Get it', style: GoogleFonts.pressStart2p(fontSize: 18))),
                                         ],
                                       ));
                             } else {
@@ -81,16 +79,14 @@ class PlayerInputWordScreen extends StatelessWidget {
                           },
                           style: GoogleFonts.pressStart2p(),
                           decoration: InputDecoration(
-                            label: Text('Type new phrase to guess',
-                                textAlign: TextAlign.center),
+                            label: Text('Type new phrase to guess', textAlign: TextAlign.center),
                             floatingLabelBehavior: FloatingLabelBehavior.never,
                             border: OutlineInputBorder(
                               borderSide: const BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.white54, width: 2),
+                              borderSide: const BorderSide(color: Colors.white54, width: 2),
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),

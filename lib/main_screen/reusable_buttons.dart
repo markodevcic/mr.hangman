@@ -5,14 +5,13 @@ import '../game_logic.dart';
 import 'main_screen.dart';
 
 class StartGameButton extends StatelessWidget {
-  final String buttonLabelFirstLine;
-  final String buttonLabelSecondLine;
-  final Function() onTapped;
-
   StartGameButton(
       {Key? key, required this.buttonLabelFirstLine, required this.buttonLabelSecondLine, required this.onTapped})
       : super(key: key);
 
+  final Function() onTapped;
+  final String buttonLabelFirstLine;
+  final String buttonLabelSecondLine;
   final GameLogic gameLogic = GameLogic();
 
   @override
@@ -61,8 +60,9 @@ class BackToMainMenuButton extends StatelessWidget {
 }
 
 class GameEndMessage extends StatelessWidget {
-  final String message;
   const GameEndMessage({required this.message});
+
+  final String message;
 
   Widget build(BuildContext context) {
     return Padding(
@@ -106,6 +106,34 @@ class ShowExitAlert {
                     Navigator.of(context).pop(willLeave);
                   },
                   child: Text(okButton, style: GoogleFonts.pressStart2p(fontSize: 16)))
+          ],
+        );
+      },
+    );
+  }
+}
+
+class ShowPhraseMeaning {
+  showAlertDialog(BuildContext context, String content) async {
+    return showDialog(
+      context: context, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Meaning',
+            style: GoogleFonts.pressStart2p(fontSize: 16, height: 1.5),
+          ),
+          content: Text(
+            content,
+            style: GoogleFonts.pressStart2p(fontSize: 16, height: 1.5),
+          ),
+          actions: [
+            TextButton(
+                style: TextButton.styleFrom(
+                  primary: Colors.white,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Dismiss', style: GoogleFonts.pressStart2p(fontSize: 16))),
           ],
         );
       },
