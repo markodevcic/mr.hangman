@@ -31,9 +31,13 @@ class MainScreen extends StatelessWidget {
             title: FittedBox(
               child: Hero(
                 tag: 'splash_logo',
-                child: Text(
-                  'Mr. Hangman',
-                  style: GoogleFonts.pressStart2p(fontSize: 28),
+                // added Material to fix red letter when Hero is 'on fly'
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: Text(
+                    'Mr. Hangman',
+                    style: GoogleFonts.pressStart2p(fontSize: 28),
+                  ),
                 ),
               ),
             ),
