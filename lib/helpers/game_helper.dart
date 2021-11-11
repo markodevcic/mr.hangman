@@ -1,5 +1,5 @@
 List usedPhrases = [];
-List phrases = [
+List phraseList = [
   ['Put a Sock In It', 'Asking someone to be quiet or to shut up'],
   ['All Greek To Me', 'When something is incomprehensible due to complexity'],
   ['A Day Late and a Dollar Short', 'Too late. A missed opportunity'],
@@ -41,55 +41,108 @@ List phrases = [
   ['On the Same Page', 'Thinking alike or understanding something in a similar way with others'],
 ];
 
-class GameLogic {
-  List quickGameWordGenerator() {
-    phrases.shuffle();
+class GameHelper {
+  String generateMainScreenMessages() {
+    final List<String> mainScreenMessagesList = [
+      'Save Mr. Hangman from the evil hands!',
+      'Mr. Hangman is counting on you!',
+      'Don\'t let bad guys harm Mr. Hangman!',
+      'You can deliver Mr. Hangman from this!',
+      'There\'s no much time left to save him!',
+      'You\'re Mr. Hangman\'s superhero!',
+      'Mr. Hangman is in great trouble, help him!',
+      'Help him so you gain life\'s deepest wisdom!',
+      'Tap into Mr. Hangman\'s well of wisdom!',
+      'You\'ll become a wise person with Mr. Hangman!',
+      'Pour his knowledge into your life\'s well!'
+    ];
+    mainScreenMessagesList.shuffle();
+    String mainScreenMessage = mainScreenMessagesList[0];
 
-    List phraseToGuess = phrases[0];
+    return mainScreenMessage;
+  }
 
-    usedPhrases.add(phrases[0]);
-    phrases.removeAt(0);
+  List phraseGenerator() {
+    phraseList.shuffle();
 
-    if (phrases.isEmpty) {
-      phrases = List.from(usedPhrases);
+    List phraseToGuess = phraseList[0];
+
+    usedPhrases.add(phraseList[0]);
+    phraseList.removeAt(0);
+
+    if (phraseList.isEmpty) {
+      phraseList = List.from(usedPhrases);
       usedPhrases = [];
     }
-
-    print('Phrases: ${phrases.length}');
-    print('UsedPhrases: ${usedPhrases.length}');
 
     return phraseToGuess;
   }
 
-  String hideWord(wordToGuess) {
-    String hiddenWordToGuess = '';
+  String hidePhrase(phraseToGuess) {
+    String hiddenPhraseToGuess = '';
 
-    wordToGuess.split('').forEach(
+    phraseToGuess.split('').forEach(
       (char) {
         if (char == ' ') {
-          hiddenWordToGuess += ' ';
+          hiddenPhraseToGuess += ' ';
         } else if (char == '?') {
-          hiddenWordToGuess += '?';
+          hiddenPhraseToGuess += '?';
+        } else if (char == '!') {
+          hiddenPhraseToGuess += '!';
         } else if (char == ',') {
-          hiddenWordToGuess += ',';
-        } else if (char != ' ') {
-          hiddenWordToGuess += '_';
+          hiddenPhraseToGuess += ',';
+        } else if (char == '\'') {
+          hiddenPhraseToGuess += '\'';
+        } else {
+          hiddenPhraseToGuess += '_';
         }
       },
     );
-    return hiddenWordToGuess;
+    return hiddenPhraseToGuess;
   }
 
-  String revealHiddenWord(hiddenWord, word, char) {
-    String replaceCharAt(hiddenWord, i, char) {
-      return hiddenWord.substring(0, i) + char + hiddenWord.substring(i + 1);
+  String revealHiddenPhrase(hiddenPhrase, phrase, char) {
+    String replaceCharAt(hiddenPhrase, i, char) {
+      return hiddenPhrase.substring(0, i) + char + hiddenPhrase.substring(i + 1);
     }
 
-    for (var i = 0; i < word.length; i++) {
-      if (word[i].toUpperCase() == char.toUpperCase()) {
-        hiddenWord = replaceCharAt(hiddenWord, i, char);
+    for (var i = 0; i < phrase.length; i++) {
+      if (phrase[i] == char) {
+        hiddenPhrase = replaceCharAt(hiddenPhrase, i, char);
       }
     }
-    return hiddenWord;
+    return hiddenPhrase;
+  }
+
+  List<String> createKeyboard() {
+    List<String> keyboard = [
+      'A',
+      'B',
+      'C',
+      'D',
+      'E',
+      'F',
+      'G',
+      'H',
+      'I',
+      'J',
+      'K',
+      'L',
+      'M',
+      'N',
+      'O',
+      'P',
+      'Q',
+      'R',
+      'S',
+      'T',
+      'U',
+      'V',
+      'W',
+      'X',
+      'Y',
+      'Z',
+    ];
+    return keyboard;
   }
 }

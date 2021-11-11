@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../game_logic.dart';
-import 'main_screen.dart';
+import '../helpers/game_helper.dart';
+import '../screens/main_screen.dart';
 
 class StartGameButton extends StatelessWidget {
   StartGameButton(
@@ -12,7 +12,7 @@ class StartGameButton extends StatelessWidget {
   final Function() onTapped;
   final String buttonLabelFirstLine;
   final String buttonLabelSecondLine;
-  final GameLogic gameLogic = GameLogic();
+  final GameHelper gameLogic = GameHelper();
 
   @override
   Widget build(context) {
@@ -29,7 +29,7 @@ class StartGameButton extends StatelessWidget {
           child: Text(
             '$buttonLabelFirstLine\n$buttonLabelSecondLine',
             textAlign: TextAlign.center,
-            style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.4),
+            style: GoogleFonts.pressStart2p(fontSize: 16, height: 1.5),
           ),
         ),
       ),
@@ -59,8 +59,8 @@ class BackToMainMenuButton extends StatelessWidget {
   }
 }
 
-class GameEndMessage extends StatelessWidget {
-  const GameEndMessage({required this.message});
+class FinishedGameMessage extends StatelessWidget {
+  const FinishedGameMessage({required this.message});
 
   final String message;
 
@@ -69,7 +69,7 @@ class GameEndMessage extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: Text(
         message,
-        style: GoogleFonts.pressStart2p(fontSize: 20, height: 1.5),
+        style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.5),
         textAlign: TextAlign.center,
       ),
     );
@@ -121,7 +121,7 @@ class ShowPhraseMeaning {
         return AlertDialog(
           title: Text(
             'Meaning',
-            style: GoogleFonts.pressStart2p(fontSize: 16, height: 1.5),
+            style: GoogleFonts.pressStart2p(fontSize: 16),
           ),
           content: Text(
             content,

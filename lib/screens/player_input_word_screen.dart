@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:hangman/game_logic.dart';
-import 'package:hangman/game_on_screen/game_on_screen.dart';
-import 'package:hangman/main_screen/reusable_buttons.dart';
+import 'package:hangman/helpers/game_helper.dart';
+import 'package:hangman/screens/game_on_screen.dart';
+import 'package:hangman/components/reusable_buttons.dart';
 
-class PlayerInputWordScreen extends StatelessWidget {
-  PlayerInputWordScreen({Key? key}) : super(key: key);
+class PlayerInputPhraseScreen extends StatelessWidget {
+  PlayerInputPhraseScreen({Key? key}) : super(key: key);
 
   final TextEditingController controller = TextEditingController();
-  final GameLogic gameLogic = GameLogic();
+  final GameHelper gameHelper = GameHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +42,17 @@ class PlayerInputWordScreen extends StatelessWidget {
                           keyboardType: TextInputType.text,
                           maxLength: 40,
                           onFieldSubmitted: (value) {
-                            if (value.isEmpty || value.contains(RegExp(r'[^a-zA-Z ]'))) {
+                            if (value.isEmpty || value.contains(RegExp(r"[^a-zA-Z !?,']"))) {
                               showDialog(
                                   context: context,
                                   builder: (_) => AlertDialog(
                                         title: Text(
-                                          'Only letters from \'a\' to \'z\' and space are permitted!',
-                                          style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.2),
+                                          'Permitted',
+                                          style: GoogleFonts.pressStart2p(fontSize: 16),
+                                        ),
+                                        content: Text(
+                                          'Alphabets: eng\n!?\',\nSpace',
+                                          style: GoogleFonts.pressStart2p(fontSize: 16, height: 1.5),
                                         ),
                                         actions: [
                                           TextButton(
@@ -59,19 +63,19 @@ class PlayerInputWordScreen extends StatelessWidget {
                                                 controller.clear();
                                                 Navigator.of(context).pop();
                                               },
-                                              child: Text('Get it', style: GoogleFonts.pressStart2p(fontSize: 18))),
+                                              child: Text('Get it', style: GoogleFonts.pressStart2p(fontSize: 16))),
                                         ],
                                       ));
                             } else {
-                              String word = value.toUpperCase();
-                              String hiddenWord = gameLogic.hideWord(word);
+                              String phrase = value.toUpperCase();
+                              String hiddenPhrase = gameHelper.hidePhrase(phrase);
                               String gameType = 'NEW 2 PLAYER';
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => GameOnScreen(
-                                            word: word,
-                                            hiddenWord: hiddenWord,
+                                            phrase: phrase,
+                                            hiddenPhrase: hiddenPhrase,
                                             gameType: gameType,
                                           )),
                                   (route) => false);

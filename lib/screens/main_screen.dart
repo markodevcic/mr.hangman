@@ -1,25 +1,25 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:hangman/game_logic.dart';
-import 'package:hangman/game_on_screen/game_on_screen.dart';
-import 'package:hangman/main_screen/reusable_buttons.dart';
-import 'package:hangman/player_input_word_screen/player_input_word_screen.dart';
-import '../text_generator.dart';
+import 'package:hangman/helpers/game_helper.dart';
+import 'package:hangman/screens/game_on_screen.dart';
+import 'package:hangman/components/reusable_buttons.dart';
+import 'package:hangman/screens/player_input_word_screen.dart';
 
 class MainScreen extends StatelessWidget {
-  final GameLogic gameLogic = GameLogic();
-  final TextGenerator textGenerator = TextGenerator();
-  final ShowExitAlert showAlert = ShowExitAlert();
+  final GameHelper gameHelper = GameHelper();
+  final ShowExitAlert showExitAlert = ShowExitAlert();
+  late String mainScreenMessage = gameHelper.generateMainScreenMessages();
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
         bool willLeave = false;
-        willLeave = await showAlert.showAlertDialog(context, 'Are you going to abandon Mr. Hangman?', willLeave,
+        willLeave = await showExitAlert.showAlertDialog(context, 'Are you going to abandon Mr. Hangman?', willLeave,
             cancelButton: 'Never', okButton: 'Sorry');
-        print('Outer: $willLeave');
         return willLeave;
       },
       child: Container(
@@ -55,25 +55,31 @@ class MainScreen extends StatelessWidget {
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
-                    child: Text(
-                      textGenerator.saveMrHangman(),
-                      style: GoogleFonts.pressStart2p(fontSize: 20, height: 1.5),
-                      textAlign: TextAlign.center,
-                    ),
+                    child: StreamBuilder(
+                        stream: Stream.periodic(Duration(seconds: 5), (_) {
+                          return mainScreenMessage = gameHelper.generateMainScreenMessages();
+                        }),
+                        builder: (context, snapshot) {
+                          return Text(
+                            mainScreenMessage,
+                            style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.5),
+                            textAlign: TextAlign.center,
+                          );
+                        }),
                   ),
                 ),
                 StartGameButton(
                   buttonLabelFirstLine: 'QUICK',
                   buttonLabelSecondLine: 'GAME',
                   onTapped: () {
-                    List term = gameLogic.quickGameWordGenerator();
-                    String word = term[0].toUpperCase();
-                    String meaning = term[1];
-                    String hiddenWord = gameLogic.hideWord(word);
+                    List phraseGenerated = gameHelper.phraseGenerator();
+                    String phrase = phraseGenerated[0].toUpperCase();
+                    String meaning = phraseGenerated[1];
+                    String hiddenWord = gameHelper.hidePhrase(phrase);
                     String gameType = 'NEW QUICK';
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) =>
-                            GameOnScreen(word: word, meaning: meaning, hiddenWord: hiddenWord, gameType: gameType)));
+                        builder: (context) => GameOnScreen(
+                            phrase: phrase, phraseMeaning: meaning, hiddenPhrase: hiddenWord, gameType: gameType)));
                   },
                 ),
                 StartGameButton(
@@ -81,7 +87,7 @@ class MainScreen extends StatelessWidget {
                   buttonLabelSecondLine: 'GAME',
                   onTapped: () {
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => PlayerInputWordScreen()), (route) => false);
+                        MaterialPageRoute(builder: (context) => PlayerInputPhraseScreen()), (route) => false);
                   },
                 ),
               ],

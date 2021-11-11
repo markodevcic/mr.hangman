@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:hangman/game_logic.dart';
-import 'package:hangman/main_screen/main_screen.dart';
-import 'package:hangman/main_screen/reusable_buttons.dart';
-import 'package:hangman/player_input_word_screen/player_input_word_screen.dart';
-import 'package:hangman/text_generator.dart';
+import 'package:hangman/helpers/game_helper.dart';
+import 'package:hangman/screens/main_screen.dart';
+import 'package:hangman/components/reusable_buttons.dart';
+import 'package:hangman/screens/player_input_word_screen.dart';
 
 class GameOnScreen extends StatefulWidget {
-  final String word;
-  String hiddenWord;
+  final String phrase;
+  String hiddenPhrase;
   final String gameType;
-  late String meaning;
+  late String phraseMeaning;
 
-  GameOnScreen({Key? key, required this.word, this.meaning = '', required this.hiddenWord, required this.gameType})
+  GameOnScreen(
+      {Key? key, required this.phrase, this.phraseMeaning = '', required this.hiddenPhrase, required this.gameType})
       : super(key: key);
 
-  final GameLogic gameLogic = GameLogic();
-  List<String> disabledLetters = [];
-  int wrongGuesses = 0;
-  final List<String> alphabet = TextGenerator().createAlphabet();
+  final GameHelper gameHelper = GameHelper();
   final BackToMainMenuButton backToMainMenuButton = BackToMainMenuButton();
-  final showPhraseMeaning = ShowPhraseMeaning();
+  final ShowPhraseMeaning showPhraseMeaning = ShowPhraseMeaning();
+  late final List<String> keyboard = gameHelper.createKeyboard();
+  List<String> disabledKeyboardLetters = [];
+  int wrongGuesses = 0;
 
   @override
   _GameOnScreenState createState() => _GameOnScreenState();
@@ -49,14 +49,14 @@ class _GameOnScreenState extends State<GameOnScreen> {
                       ),
                     ),
                   ),
-                  (widget.hiddenWord == widget.word && widget.meaning.isNotEmpty)
+                  (widget.hiddenPhrase == widget.phrase && widget.phraseMeaning.isNotEmpty)
                       ? Stack(
                           alignment: Alignment.center,
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 20),
                               child: Text(
-                                widget.hiddenWord,
+                                widget.hiddenPhrase,
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.5),
                               ),
@@ -66,22 +66,22 @@ class _GameOnScreenState extends State<GameOnScreen> {
                               child: IconButton(
                                 icon: Icon(Icons.info_outline, size: 14, color: Colors.grey.shade400),
                                 onPressed: () {
-                                  widget.showPhraseMeaning.showAlertDialog(context, widget.meaning);
+                                  widget.showPhraseMeaning.showAlertDialog(context, widget.phraseMeaning);
                                 },
                               ),
                             ),
                           ],
                         )
                       : Text(
-                          widget.hiddenWord,
+                          widget.hiddenPhrase,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.5),
                         ),
                   Container(
                     child: Column(
                       children: [
-                        if (widget.wrongGuesses == 6) GameEndMessage(message: 'You failed to save Mr. Hangman!'),
-                        if (widget.wrongGuesses == 7) GameEndMessage(message: 'You set Mr. Hangman free!'),
+                        if (widget.wrongGuesses == 6) FinishedGameMessage(message: 'You failed to save Mr. Hangman!'),
+                        if (widget.wrongGuesses == 7) FinishedGameMessage(message: 'You set Mr. Hangman free!'),
                         if (widget.wrongGuesses < 6)
                           Padding(
                             padding: EdgeInsets.only(top: 10),
@@ -90,25 +90,25 @@ class _GameOnScreenState extends State<GameOnScreen> {
                               runSpacing: -10,
                               alignment: WrapAlignment.center,
                               children: [
-                                for (var char in widget.alphabet)
+                                for (var char in widget.keyboard)
                                   MaterialButton(
                                     child: Text(char, style: GoogleFonts.pressStart2p(fontSize: 14)),
                                     minWidth: 60,
-                                    onPressed: (widget.disabledLetters.contains(char))
+                                    onPressed: (widget.disabledKeyboardLetters.contains(char))
                                         ? null
                                         : () {
-                                            (widget.word.contains(char))
+                                            (widget.phrase.contains(char))
                                                 ? setState(() {
-                                                    widget.disabledLetters.add(char);
-                                                    widget.hiddenWord = widget.gameLogic
-                                                        .revealHiddenWord(widget.hiddenWord, widget.word, char);
-                                                    if (widget.hiddenWord == widget.word) {
+                                                    widget.disabledKeyboardLetters.add(char);
+                                                    widget.hiddenPhrase = widget.gameHelper
+                                                        .revealHiddenPhrase(widget.hiddenPhrase, widget.phrase, char);
+                                                    if (widget.hiddenPhrase == widget.phrase) {
                                                       widget.wrongGuesses = 7;
                                                     }
                                                   })
                                                 : setState(
                                                     () {
-                                                      widget.disabledLetters.add(char);
+                                                      widget.disabledKeyboardLetters.add(char);
                                                       widget.wrongGuesses += 1;
                                                     },
                                                   );
@@ -126,23 +126,23 @@ class _GameOnScreenState extends State<GameOnScreen> {
                                   buttonLabelSecondLine: 'GAME',
                                   onTapped: (widget.gameType == 'NEW QUICK')
                                       ? () {
-                                          List term = widget.gameLogic.quickGameWordGenerator();
-                                          String word = term[0].toUpperCase();
-                                          String meaning = term[1];
-                                          String hiddenWord = widget.gameLogic.hideWord(word);
+                                          List phraseGenerated = widget.gameHelper.phraseGenerator();
+                                          String phrase = phraseGenerated[0].toUpperCase();
+                                          String phraseMeaning = phraseGenerated[1];
+                                          String hiddenPhrase = widget.gameHelper.hidePhrase(phrase);
                                           Navigator.pushAndRemoveUntil(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) => GameOnScreen(
-                                                      word: word,
-                                                      meaning: meaning,
-                                                      hiddenWord: hiddenWord,
+                                                      phrase: phrase,
+                                                      phraseMeaning: phraseMeaning,
+                                                      hiddenPhrase: hiddenPhrase,
                                                       gameType: widget.gameType)),
                                               (route) => false);
                                         }
                                       : () => Navigator.pushAndRemoveUntil(
                                           context,
-                                          MaterialPageRoute(builder: (context) => PlayerInputWordScreen()),
+                                          MaterialPageRoute(builder: (context) => PlayerInputPhraseScreen()),
                                           (route) => false)),
                               StartGameButton(
                                 buttonLabelFirstLine: 'MAIN',
