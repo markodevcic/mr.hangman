@@ -12,14 +12,18 @@ class GameOnScreen extends StatefulWidget {
   final String gameType;
   late String phraseMeaning;
 
-  GameOnScreen(
-      {Key? key, required this.phrase, this.phraseMeaning = '', required this.hiddenPhrase, required this.gameType})
-      : super(key: key);
+  GameOnScreen({
+    required this.phrase,
+    this.phraseMeaning = '',
+    required this.hiddenPhrase,
+    required this.gameType,
+  });
 
   final GameHelper gameHelper = GameHelper();
-  final BackToMainMenuButton backToMainMenuButton = BackToMainMenuButton();
+  final QuickGame quickGameGenerate = QuickGame.generate();
+  final ShowExitAlert showExitAlert = ShowExitAlert();
   final ShowPhraseMeaning showPhraseMeaning = ShowPhraseMeaning();
-  late final List<String> keyboard = gameHelper.createKeyboard();
+  late final List keyboard = gameHelper.createKeyboard();
   List<String> disabledKeyboardLetters = [];
   int wrongGuesses = 0;
 
@@ -30,8 +34,15 @@ class GameOnScreen extends StatefulWidget {
 class _GameOnScreenState extends State<GameOnScreen> {
   @override
   Widget build(BuildContext context) {
+    print(widget.phrase);
+    print(widget.gameType);
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async {
+        bool willLeave = false;
+        willLeave = await widget.showExitAlert.showAlertDialog(context, 'Leaving Mr. Hangman on his own?', willLeave,
+            cancelButton: 'No', okButton: 'Main menu');
+        return willLeave;
+      },
       child: Container(
         decoration: kBackgroundImage,
         child: Scaffold(
@@ -84,35 +95,41 @@ class _GameOnScreenState extends State<GameOnScreen> {
                         if (widget.wrongGuesses == 7) FinishedGameMessage(message: 'You set Mr. Hangman free!'),
                         if (widget.wrongGuesses < 6)
                           Padding(
-                            padding: EdgeInsets.only(top: 10),
-                            child: Wrap(
-                              spacing: 1,
-                              runSpacing: -10,
-                              alignment: WrapAlignment.center,
+                            padding: EdgeInsets.only(top: 30),
+                            child: Column(
                               children: [
-                                for (var char in widget.keyboard)
-                                  MaterialButton(
-                                    child: Text(char, style: GoogleFonts.pressStart2p(fontSize: 14)),
-                                    minWidth: 60,
-                                    onPressed: (widget.disabledKeyboardLetters.contains(char))
-                                        ? null
-                                        : () {
-                                            (widget.phrase.contains(char))
-                                                ? setState(() {
-                                                    widget.disabledKeyboardLetters.add(char);
-                                                    widget.hiddenPhrase = widget.gameHelper
-                                                        .revealHiddenPhrase(widget.hiddenPhrase, widget.phrase, char);
-                                                    if (widget.hiddenPhrase == widget.phrase) {
-                                                      widget.wrongGuesses = 7;
-                                                    }
-                                                  })
-                                                : setState(
-                                                    () {
-                                                      widget.disabledKeyboardLetters.add(char);
-                                                      widget.wrongGuesses += 1;
-                                                    },
-                                                  );
-                                          },
+                                for (var row = 0; row < widget.keyboard.length; row++)
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      for (var char in widget.keyboard[row])
+                                        Flexible(
+                                          child: MaterialButton(
+                                            child: Text(char, style: GoogleFonts.pressStart2p(fontSize: 14)),
+                                            height: 55,
+                                            minWidth: 1,
+                                            onPressed: (widget.disabledKeyboardLetters.contains(char))
+                                                ? null
+                                                : () {
+                                                    (widget.phrase.contains(char))
+                                                        ? setState(() {
+                                                            widget.disabledKeyboardLetters.add(char);
+                                                            widget.hiddenPhrase = widget.gameHelper.revealHiddenPhrase(
+                                                                widget.hiddenPhrase, widget.phrase, char);
+                                                            if (widget.hiddenPhrase == widget.phrase) {
+                                                              widget.wrongGuesses = 7;
+                                                            }
+                                                          })
+                                                        : setState(
+                                                            () {
+                                                              widget.disabledKeyboardLetters.add(char);
+                                                              widget.wrongGuesses += 1;
+                                                            },
+                                                          );
+                                                  },
+                                          ),
+                                        ),
+                                    ],
                                   )
                               ],
                             ),
@@ -126,24 +143,24 @@ class _GameOnScreenState extends State<GameOnScreen> {
                                   buttonLabelSecondLine: 'GAME',
                                   onTapped: (widget.gameType == 'NEW QUICK')
                                       ? () {
-                                          List phraseGenerated = widget.gameHelper.phraseGenerator();
-                                          String phrase = phraseGenerated[0].toUpperCase();
-                                          String phraseMeaning = phraseGenerated[1];
-                                          String hiddenPhrase = widget.gameHelper.hidePhrase(phrase);
-                                          Navigator.pushAndRemoveUntil(
+                                          // List phraseGenerated = widget.gameHelper.quickGameGenerator();
+                                          // String phrase = phraseGenerated[0].toUpperCase();
+                                          // String phraseMeaning = phraseGenerated[1];
+                                          // String hiddenPhrase = widget.gameHelper.hidePhrase(phrase);
+                                          String phrase = widget.quickGameGenerate.phrase;
+                                          String phraseMeaning = widget.quickGameGenerate.phraseMeaning;
+                                          String hiddenPhrase = widget.quickGameGenerate.hiddenPhrase;
+                                          Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) => GameOnScreen(
                                                       phrase: phrase,
                                                       phraseMeaning: phraseMeaning,
                                                       hiddenPhrase: hiddenPhrase,
-                                                      gameType: widget.gameType)),
-                                              (route) => false);
+                                                      gameType: widget.gameType)));
                                         }
-                                      : () => Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => PlayerInputPhraseScreen()),
-                                          (route) => false)),
+                                      : () => Navigator.pushReplacement(
+                                          context, MaterialPageRoute(builder: (context) => PlayerInputPhraseScreen()))),
                               StartGameButton(
                                 buttonLabelFirstLine: 'MAIN',
                                 buttonLabelSecondLine: 'MENU',

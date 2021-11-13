@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:hangman/helpers/game_helper.dart';
@@ -72,22 +71,24 @@ class MainScreen extends StatelessWidget {
                   buttonLabelFirstLine: 'QUICK',
                   buttonLabelSecondLine: 'GAME',
                   onTapped: () {
-                    List phraseGenerated = gameHelper.phraseGenerator();
-                    String phrase = phraseGenerated[0].toUpperCase();
-                    String meaning = phraseGenerated[1];
-                    String hiddenWord = gameHelper.hidePhrase(phrase);
-                    String gameType = 'NEW QUICK';
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    final QuickGame quickGameGenerate = QuickGame.generate();
+                    String phrase = quickGameGenerate.phrase;
+                    String phraseMeaning = quickGameGenerate.phraseMeaning;
+                    String hiddenPhrase = quickGameGenerate.hiddenPhrase;
+                    String gameType = quickGameGenerate.gameType;
+                    Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => GameOnScreen(
-                            phrase: phrase, phraseMeaning: meaning, hiddenPhrase: hiddenWord, gameType: gameType)));
+                            phrase: phrase,
+                            phraseMeaning: phraseMeaning,
+                            hiddenPhrase: hiddenPhrase,
+                            gameType: gameType)));
                   },
                 ),
                 StartGameButton(
                   buttonLabelFirstLine: '2 PLAYER',
                   buttonLabelSecondLine: 'GAME',
                   onTapped: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => PlayerInputPhraseScreen()), (route) => false);
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PlayerInputPhraseScreen()));
                   },
                 ),
               ],

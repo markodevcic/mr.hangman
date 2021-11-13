@@ -6,8 +6,6 @@ import 'package:hangman/screens/game_on_screen.dart';
 import 'package:hangman/components/reusable_buttons.dart';
 
 class PlayerInputPhraseScreen extends StatelessWidget {
-  PlayerInputPhraseScreen({Key? key}) : super(key: key);
-
   final TextEditingController controller = TextEditingController();
   final GameHelper gameHelper = GameHelper();
 
@@ -67,18 +65,19 @@ class PlayerInputPhraseScreen extends StatelessWidget {
                                         ],
                                       ));
                             } else {
-                              String phrase = value.toUpperCase();
-                              String hiddenPhrase = gameHelper.hidePhrase(phrase);
-                              String gameType = 'NEW 2 PLAYER';
-                              Navigator.pushAndRemoveUntil(
+                              TwoPlayerGame twoPlayerGameGenerate = TwoPlayerGame.generate(value.toUpperCase());
+                              String phrase = twoPlayerGameGenerate.phrase;
+                              String hiddenPhrase = twoPlayerGameGenerate.hiddenPhrase;
+                              String gameType = twoPlayerGameGenerate.gameType;
+
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => GameOnScreen(
                                             phrase: phrase,
                                             hiddenPhrase: hiddenPhrase,
                                             gameType: gameType,
-                                          )),
-                                  (route) => false);
+                                          )));
                             }
                           },
                           style: GoogleFonts.pressStart2p(),

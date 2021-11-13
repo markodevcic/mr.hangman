@@ -5,14 +5,16 @@ import '../helpers/game_helper.dart';
 import '../screens/main_screen.dart';
 
 class StartGameButton extends StatelessWidget {
-  StartGameButton(
-      {Key? key, required this.buttonLabelFirstLine, required this.buttonLabelSecondLine, required this.onTapped})
-      : super(key: key);
+  StartGameButton({
+    required this.buttonLabelFirstLine,
+    required this.buttonLabelSecondLine,
+    required this.onTapped,
+  });
 
   final Function() onTapped;
   final String buttonLabelFirstLine;
   final String buttonLabelSecondLine;
-  final GameHelper gameLogic = GameHelper();
+  final GameHelper gameHelper = GameHelper();
 
   @override
   Widget build(context) {
@@ -38,8 +40,6 @@ class StartGameButton extends StatelessWidget {
 }
 
 class BackToMainMenuButton extends StatelessWidget {
-  const BackToMainMenuButton({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -81,7 +81,7 @@ class ShowExitAlert {
       {String cancelButton = '', String okButton = ''}) async {
     return await showDialog(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           content: Text(
@@ -116,7 +116,7 @@ class ShowExitAlert {
 class ShowPhraseMeaning {
   showAlertDialog(BuildContext context, String content) async {
     return showDialog(
-      context: context, // user must tap button!
+      context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(

@@ -41,6 +41,51 @@ List phraseList = [
   ['On the Same Page', 'Thinking alike or understanding something in a similar way with others'],
 ];
 
+class QuickGame {
+  String phrase;
+  String phraseMeaning;
+  String hiddenPhrase;
+  String gameType;
+  QuickGame(this.phrase, this.phraseMeaning, this.hiddenPhrase, this.gameType);
+
+  factory QuickGame.generate() {
+    String gameType = 'NEW QUICK';
+
+    phraseList.shuffle();
+
+    List phraseToGuess = phraseList[0];
+
+    String phrase = phraseToGuess[0].toUpperCase();
+    String phraseMeaning = phraseToGuess[1];
+
+    usedPhrases.add(phraseList[0]);
+    phraseList.removeAt(0);
+
+    if (phraseList.isEmpty) {
+      phraseList = List.from(usedPhrases);
+      usedPhrases = [];
+    }
+
+    String hiddenPhrase = GameHelper().hidePhrase(phrase);
+    return QuickGame(phrase, phraseMeaning, hiddenPhrase, gameType);
+  }
+}
+
+class TwoPlayerGame {
+  String phrase;
+  String hiddenPhrase;
+  String gameType;
+  TwoPlayerGame(this.phrase, this.hiddenPhrase, this.gameType);
+
+  factory TwoPlayerGame.generate(String phrase) {
+    String gameType = 'NEW 2 PLAYER';
+
+    String hiddenPhrase = GameHelper().hidePhrase(phrase);
+
+    return TwoPlayerGame(phrase, hiddenPhrase, gameType);
+  }
+}
+
 class GameHelper {
   String generateMainScreenMessages() {
     final List<String> mainScreenMessagesList = [
@@ -60,22 +105,6 @@ class GameHelper {
     String mainScreenMessage = mainScreenMessagesList[0];
 
     return mainScreenMessage;
-  }
-
-  List phraseGenerator() {
-    phraseList.shuffle();
-
-    List phraseToGuess = phraseList[0];
-
-    usedPhrases.add(phraseList[0]);
-    phraseList.removeAt(0);
-
-    if (phraseList.isEmpty) {
-      phraseList = List.from(usedPhrases);
-      usedPhrases = [];
-    }
-
-    return phraseToGuess;
   }
 
   String hidePhrase(phraseToGuess) {
@@ -114,34 +143,11 @@ class GameHelper {
     return hiddenPhrase;
   }
 
-  List<String> createKeyboard() {
-    List<String> keyboard = [
-      'A',
-      'B',
-      'C',
-      'D',
-      'E',
-      'F',
-      'G',
-      'H',
-      'I',
-      'J',
-      'K',
-      'L',
-      'M',
-      'N',
-      'O',
-      'P',
-      'Q',
-      'R',
-      'S',
-      'T',
-      'U',
-      'V',
-      'W',
-      'X',
-      'Y',
-      'Z',
+  List createKeyboard() {
+    List keyboard = [
+      ['Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O', 'P'],
+      ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+      ['Y', 'X', 'C', 'V', 'B', 'N', 'M'],
     ];
     return keyboard;
   }
