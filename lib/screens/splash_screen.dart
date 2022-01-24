@@ -5,8 +5,6 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:hangman/screens/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
-
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -47,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     _navigateToMainScreen();
-    background = Image.asset('images/background.jpg');
+    background = Image.asset('assets/images/background.jpg');
   }
 
   @override

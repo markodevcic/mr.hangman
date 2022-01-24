@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:hangman/helpers/game_helper.dart';
 import 'package:hangman/screens/main_screen.dart';
@@ -8,22 +9,24 @@ import 'package:hangman/screens/player_input_word_screen.dart';
 
 class GameOnScreen extends StatefulWidget {
   final String phrase;
+  late String phraseMeaning;
   String hiddenPhrase;
   final String gameType;
-  late String phraseMeaning;
+  final keyboardLanguage;
 
   GameOnScreen({
     required this.phrase,
     this.phraseMeaning = '',
     required this.hiddenPhrase,
     required this.gameType,
+    required this.keyboardLanguage,
   });
 
   final GameHelper gameHelper = GameHelper();
   final QuickGame quickGameGenerate = QuickGame.generate();
   final ShowExitAlert showExitAlert = ShowExitAlert();
   final ShowPhraseMeaning showPhraseMeaning = ShowPhraseMeaning();
-  late final List keyboard = gameHelper.createKeyboard();
+  late final List keyboard = gameHelper.createKeyboard(keyboardLanguage);
   List<String> disabledKeyboardLetters = [];
   int wrongGuesses = 0;
 
@@ -34,13 +37,12 @@ class GameOnScreen extends StatefulWidget {
 class _GameOnScreenState extends State<GameOnScreen> {
   @override
   Widget build(BuildContext context) {
-    print(widget.phrase);
-    print(widget.gameType);
+    final translate = AppLocalizations.of(context);
     return WillPopScope(
       onWillPop: () async {
         bool willLeave = false;
-        willLeave = await widget.showExitAlert.showAlertDialog(context, 'Leaving Mr. Hangman on his own?', willLeave,
-            cancelButton: 'No', okButton: 'Main menu');
+        willLeave = await widget.showExitAlert.showAlertDialog(context, translate!.quitGameContentMessage, willLeave,
+            cancelButton: translate.quitGameCancelButton, okButton: translate.quitGameOkButton);
         return willLeave;
       },
       child: Container(
@@ -55,7 +57,7 @@ class _GameOnScreenState extends State<GameOnScreen> {
                     flex: 10,
                     child: Container(
                       child: Image.asset(
-                        'images/hangman${widget.wrongGuesses}.png',
+                        'assets/images/hangman${widget.wrongGuesses}.png',
                         gaplessPlayback: true,
                       ),
                     ),
@@ -91,8 +93,9 @@ class _GameOnScreenState extends State<GameOnScreen> {
                   Container(
                     child: Column(
                       children: [
-                        if (widget.wrongGuesses == 6) FinishedGameMessage(message: 'You failed to save Mr. Hangman!'),
-                        if (widget.wrongGuesses == 7) FinishedGameMessage(message: 'You set Mr. Hangman free!'),
+                        if (widget.wrongGuesses == 6) FinishedGameMessage(message: translate!.finishedGameFailMessage),
+                        if (widget.wrongGuesses == 7)
+                          FinishedGameMessage(message: translate!.finishedGameSuccessMessage),
                         if (widget.wrongGuesses < 6)
                           Padding(
                             padding: EdgeInsets.only(top: 30),
@@ -139,14 +142,12 @@ class _GameOnScreenState extends State<GameOnScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               StartGameButton(
-                                  buttonLabelFirstLine: widget.gameType,
-                                  buttonLabelSecondLine: 'GAME',
+                                  buttonLabelFirstLine: (widget.keyboardLanguage == 'en')
+                                      ? translate!.startNewQuickGameButtonFirstLine
+                                      : translate!.startNEWTwoPlayerGameButtonFirstLine,
+                                  buttonLabelSecondLine: translate.startAnyGameButtonSecondLine,
                                   onTapped: (widget.gameType == 'NEW QUICK')
                                       ? () {
-                                          // List phraseGenerated = widget.gameHelper.quickGameGenerator();
-                                          // String phrase = phraseGenerated[0].toUpperCase();
-                                          // String phraseMeaning = phraseGenerated[1];
-                                          // String hiddenPhrase = widget.gameHelper.hidePhrase(phrase);
                                           String phrase = widget.quickGameGenerate.phrase;
                                           String phraseMeaning = widget.quickGameGenerate.phraseMeaning;
                                           String hiddenPhrase = widget.quickGameGenerate.hiddenPhrase;
@@ -154,16 +155,18 @@ class _GameOnScreenState extends State<GameOnScreen> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) => GameOnScreen(
-                                                      phrase: phrase,
-                                                      phraseMeaning: phraseMeaning,
-                                                      hiddenPhrase: hiddenPhrase,
-                                                      gameType: widget.gameType)));
+                                                        phrase: phrase,
+                                                        phraseMeaning: phraseMeaning,
+                                                        hiddenPhrase: hiddenPhrase,
+                                                        gameType: widget.gameType,
+                                                        keyboardLanguage: widget.keyboardLanguage,
+                                                      )));
                                         }
                                       : () => Navigator.pushReplacement(
                                           context, MaterialPageRoute(builder: (context) => PlayerInputPhraseScreen()))),
                               StartGameButton(
-                                buttonLabelFirstLine: 'MAIN',
-                                buttonLabelSecondLine: 'MENU',
+                                buttonLabelFirstLine: translate.mainMenuButtonFirstLine,
+                                buttonLabelSecondLine: translate.mainMenuButtonSecondLine,
                                 onTapped: () {
                                   Navigator.pushAndRemoveUntil(
                                       context, MaterialPageRoute(builder: (context) => MainScreen()), (route) => false);

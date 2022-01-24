@@ -143,7 +143,7 @@ class ShowPhraseMeaning {
 
 const kBackgroundImage = BoxDecoration(
   image: DecorationImage(
-    image: AssetImage('images/background.jpg'),
+    image: AssetImage('assets/images/background.jpg'),
     fit: BoxFit.cover,
   ),
 );
