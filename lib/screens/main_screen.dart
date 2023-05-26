@@ -1,13 +1,11 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:hangman/helpers/game_helper.dart';
-import 'package:hangman/main.dart';
-import 'package:hangman/screens/game_on_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hangman/components/reusable_buttons.dart';
+import 'package:hangman/helpers/game_helper.dart';
+import 'package:hangman/screens/game_on_screen.dart';
 import 'package:hangman/screens/player_input_word_screen.dart';
 
 class MainScreen extends StatelessWidget {

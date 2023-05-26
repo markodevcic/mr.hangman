@@ -50,7 +50,9 @@ class BackToMainMenuButton extends StatelessWidget {
         ),
         onPressed: () {
           Navigator.pushAndRemoveUntil(
-              context, MaterialPageRoute(builder: (context) => MainScreen()), (route) => false);
+              context,
+              MaterialPageRoute(builder: (context) => MainScreen()),
+              (route) => false);
         },
       ),
       left: 10,
@@ -77,7 +79,8 @@ class FinishedGameMessage extends StatelessWidget {
 }
 
 class ShowExitAlert {
-  Future<bool> showAlertDialog(BuildContext context, String content, bool willLeave,
+  Future<bool> showAlertDialog(
+      BuildContext context, String content, bool willLeave,
       {String cancelButton = '', String okButton = ''}) async {
     return await showDialog(
       context: context,
@@ -92,20 +95,22 @@ class ShowExitAlert {
             if (cancelButton.isNotEmpty)
               TextButton(
                   style: TextButton.styleFrom(
-                    primary: Colors.white,
+                    foregroundColor: Colors.white,
                   ),
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text(cancelButton, style: GoogleFonts.pressStart2p(fontSize: 16))),
+                  child: Text(cancelButton,
+                      style: GoogleFonts.pressStart2p(fontSize: 16))),
             if (okButton.isNotEmpty)
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red.shade600,
+                    backgroundColor: Colors.red.shade600,
                   ),
                   onPressed: () {
                     willLeave = true;
                     Navigator.of(context).pop(willLeave);
                   },
-                  child: Text(okButton, style: GoogleFonts.pressStart2p(fontSize: 16)))
+                  child: Text(okButton,
+                      style: GoogleFonts.pressStart2p(fontSize: 16)))
           ],
         );
       },
@@ -130,10 +135,11 @@ class ShowPhraseMeaning {
           actions: [
             TextButton(
                 style: TextButton.styleFrom(
-                  primary: Colors.white,
+                  foregroundColor: Colors.white,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('Dismiss', style: GoogleFonts.pressStart2p(fontSize: 16))),
+                child: Text('Dismiss',
+                    style: GoogleFonts.pressStart2p(fontSize: 16))),
           ],
         );
       },
