@@ -1,19 +1,29 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hangman/screens/main_screen.dart';
+import 'package:hangman/utilities/prefs.dart';
 
-import 'translations/l10n.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
-  runApp(StartHangman());
+  await EasyLocalization.ensureInitialized();
+  await Prefs.initializePrefs();
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [
+        Locale('hr', 'HR'),
+        Locale('en', 'US'),
+      ],
+      fallbackLocale: const Locale('en', 'US'),
+      path: 'assets/translations',
+      child: StartHangman(),
+    ),
+  );
 }
 
 class StartHangman extends StatefulWidget {
-  String language = 'en';
-
   @override
   State<StartHangman> createState() => _StartHangmanState();
 }
@@ -25,13 +35,9 @@ class _StartHangmanState extends State<StartHangman> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate
-      ],
-      supportedLocales: L10n.all,
-      locale: Locale(widget.language),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       theme: ThemeData.dark(),
       home: Builder(
         builder: (context) => Scaffold(
@@ -71,7 +77,7 @@ class _StartHangmanState extends State<StartHangman> {
                     MaterialButton(
                       onPressed: () {
                         setState(() {
-                          widget.language = 'en';
+                          context.setLocale(Locale('en', 'US'));
                         });
                         Navigator.pushReplacement(
                             context,
@@ -84,7 +90,7 @@ class _StartHangmanState extends State<StartHangman> {
                     MaterialButton(
                       onPressed: () {
                         setState(() {
-                          widget.language = 'hr';
+                          context.setLocale(Locale('hr', 'HR'));
                         });
                         Navigator.pushReplacement(
                             context,

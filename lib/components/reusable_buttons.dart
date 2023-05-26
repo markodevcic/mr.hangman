@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -43,6 +44,8 @@ class BackToMainMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
+      left: 10,
+      top: 10,
       child: IconButton(
         icon: Icon(
           Icons.home_rounded,
@@ -55,8 +58,6 @@ class BackToMainMenuButton extends StatelessWidget {
               (route) => false);
         },
       ),
-      left: 10,
-      top: 10,
     );
   }
 }
@@ -73,14 +74,13 @@ class FinishedGameMessage extends StatelessWidget {
         message,
         style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.5),
         textAlign: TextAlign.center,
-      ),
+      ).tr(),
     );
   }
 }
 
-class ShowExitAlert {
-  Future<bool> showAlertDialog(
-      BuildContext context, String content, bool willLeave,
+class ExitAlert {
+  static Future<bool> show(BuildContext context, String content, bool willLeave,
       {String cancelButton = '', String okButton = ''}) async {
     return await showDialog(
       context: context,
@@ -90,27 +90,33 @@ class ShowExitAlert {
           content: Text(
             content,
             style: GoogleFonts.pressStart2p(fontSize: 16, height: 1.5),
-          ),
+          ).tr(),
           actions: [
             if (cancelButton.isNotEmpty)
               TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                  ),
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text(cancelButton,
-                      style: GoogleFonts.pressStart2p(fontSize: 16))),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  cancelButton,
+                  style: GoogleFonts.pressStart2p(fontSize: 16),
+                ).tr(),
+              ),
             if (okButton.isNotEmpty)
               ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red.shade600,
-                  ),
-                  onPressed: () {
-                    willLeave = true;
-                    Navigator.of(context).pop(willLeave);
-                  },
-                  child: Text(okButton,
-                      style: GoogleFonts.pressStart2p(fontSize: 16)))
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red.shade600,
+                ),
+                onPressed: () {
+                  willLeave = true;
+                  Navigator.of(context).pop(willLeave);
+                },
+                child: Text(
+                  okButton,
+                  style: GoogleFonts.pressStart2p(fontSize: 16),
+                ).tr(),
+              )
           ],
         );
       },

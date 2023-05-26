@@ -1,9 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hangman/components/reusable_buttons.dart';
 import 'package:hangman/helpers/game_helper.dart';
 import 'package:hangman/screens/game_on_screen.dart';
+import 'package:hangman/utilities/locale_keys.dart';
 
 class PlayerInputPhraseScreen extends StatelessWidget {
   final TextEditingController controller = TextEditingController();
@@ -11,7 +12,6 @@ class PlayerInputPhraseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = AppLocalizations.of(context);
     return WillPopScope(
       onWillPop: () async => false,
       child: Container(
@@ -21,7 +21,6 @@ class PlayerInputPhraseScreen extends StatelessWidget {
           body: SafeArea(
             child: Stack(
               children: [
-                BackToMainMenuButton(),
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -43,37 +42,38 @@ class PlayerInputPhraseScreen extends StatelessWidget {
                           maxLength: 40,
                           onFieldSubmitted: (value) {
                             if (value.isEmpty ||
-                                value.contains(
-                                    RegExp(translate!.permittedCharacters))) {
+                                value.contains(RegExp(
+                                    LocaleKeys.permittedCharacters.tr()))) {
                               showDialog(
                                   context: context,
                                   builder: (_) => AlertDialog(
                                         title: Text(
-                                          translate!.alertPermittedMessageTitle,
+                                          LocaleKeys.alertPermittedMessageTitle,
                                           style: GoogleFonts.pressStart2p(
                                               fontSize: 16),
-                                        ),
+                                        ).tr(),
                                         content: Text(
-                                          translate
+                                          LocaleKeys
                                               .alertPermittedMessageContent,
                                           style: GoogleFonts.pressStart2p(
                                               fontSize: 16, height: 1.5),
-                                        ),
+                                        ).tr(),
                                         actions: [
                                           TextButton(
-                                              style: TextButton.styleFrom(
-                                                foregroundColor: Colors.white,
-                                              ),
-                                              onPressed: () {
-                                                controller.clear();
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text(
-                                                  translate
-                                                      .alertPermittedMessageButton,
-                                                  style:
-                                                      GoogleFonts.pressStart2p(
-                                                          fontSize: 16))),
+                                            style: TextButton.styleFrom(
+                                              foregroundColor: Colors.white,
+                                            ),
+                                            onPressed: () {
+                                              controller.clear();
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text(
+                                              LocaleKeys
+                                                  .alertPermittedMessageButton,
+                                              style: GoogleFonts.pressStart2p(
+                                                  fontSize: 16),
+                                            ).tr(),
+                                          ),
                                         ],
                                       ));
                             } else {
@@ -84,7 +84,7 @@ class PlayerInputPhraseScreen extends StatelessWidget {
                                   twoPlayerGameGenerate.hiddenPhrase;
                               String gameType = twoPlayerGameGenerate.gameType;
                               String keyboardLanguage =
-                                  translate.keyboardLanguage;
+                                  LocaleKeys.keyboardLanguage.tr();
 
                               Navigator.pushReplacement(
                                   context,
@@ -99,8 +99,10 @@ class PlayerInputPhraseScreen extends StatelessWidget {
                           },
                           style: GoogleFonts.pressStart2p(),
                           decoration: InputDecoration(
-                            label: Text(translate!.inputFieldMessage,
-                                textAlign: TextAlign.center),
+                            label: Text(
+                              LocaleKeys.inputFieldMessage,
+                              textAlign: TextAlign.center,
+                            ).tr(),
                             floatingLabelBehavior: FloatingLabelBehavior.never,
                             border: OutlineInputBorder(
                               borderSide: const BorderSide(color: Colors.white),
@@ -117,6 +119,7 @@ class PlayerInputPhraseScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                BackToMainMenuButton(),
               ],
             ),
           ),

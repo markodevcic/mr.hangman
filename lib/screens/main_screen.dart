@@ -1,34 +1,31 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hangman/components/reusable_buttons.dart';
 import 'package:hangman/helpers/game_helper.dart';
 import 'package:hangman/screens/game_on_screen.dart';
 import 'package:hangman/screens/player_input_word_screen.dart';
+import 'package:hangman/utilities/locale_keys.dart';
 
 class MainScreen extends StatelessWidget {
+  MainScreen({Key? key}) : super(key: key);
+
   final GameHelper gameHelper = GameHelper();
-  final ShowExitAlert showExitAlert = ShowExitAlert();
-  late String chooseLanguage = 'ENG';
   late String mainScreenMessage = '';
   bool isVisible = true;
   int isNotVisibleTime = 600;
 
-  late Function() changeLanguage;
-
   @override
   Widget build(BuildContext context) {
-    final translate = AppLocalizations.of(context);
-
     return WillPopScope(
       onWillPop: () async {
         bool willLeave = false;
-        willLeave = await showExitAlert.showAlertDialog(
-            context, translate!.exitGameContentMessage, willLeave,
-            cancelButton: translate.exitGameCancelButton,
-            okButton: translate.exitGameOkButton);
+        willLeave = await ExitAlert.show(
+            context, LocaleKeys.exitGameContentMessage, willLeave,
+            cancelButton: LocaleKeys.exitGameCancelButton,
+            okButton: LocaleKeys.exitGameOkButton);
         return willLeave;
       },
       child: Container(
@@ -73,7 +70,7 @@ class MainScreen extends StatelessWidget {
                                 setState(() => isNotVisibleTime = 5000);
                                 mainScreenMessage =
                                     gameHelper.generateMainScreenMessages(
-                                        translate!.keyboardLanguage);
+                                        LocaleKeys.keyboardLanguage.tr());
                               } else {
                                 setState(() => isNotVisibleTime = 300);
                               }
@@ -104,30 +101,35 @@ class MainScreen extends StatelessWidget {
                   ),
                   StartGameButton(
                     buttonLabelFirstLine:
-                        translate!.startQuickGameButtonFirstLine,
+                        LocaleKeys.startQuickGameButtonFirstLine.tr(),
                     buttonLabelSecondLine:
-                        translate.startAnyGameButtonSecondLine,
+                        LocaleKeys.startAnyGameButtonSecondLine.tr(),
                     onTapped: () {
                       final QuickGame quickGameGenerate = QuickGame.generate();
                       String phrase = quickGameGenerate.phrase;
                       String phraseMeaning = quickGameGenerate.phraseMeaning;
                       String hiddenPhrase = quickGameGenerate.hiddenPhrase;
                       String gameType = quickGameGenerate.gameType;
-                      String keyboardLanguage = translate.keyboardLanguage;
-                      Navigator.of(context).push(MaterialPageRoute(
+                      String keyboardLanguage =
+                          LocaleKeys.keyboardLanguage.tr();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
                           builder: (context) => GameOnScreen(
-                              phrase: phrase,
-                              phraseMeaning: phraseMeaning,
-                              hiddenPhrase: hiddenPhrase,
-                              gameType: gameType,
-                              keyboardLanguage: keyboardLanguage)));
+                            phrase: phrase,
+                            phraseMeaning: phraseMeaning,
+                            hiddenPhrase: hiddenPhrase,
+                            gameType: gameType,
+                            keyboardLanguage: keyboardLanguage,
+                          ),
+                        ),
+                      );
                     },
                   ),
                   StartGameButton(
                     buttonLabelFirstLine:
-                        translate.startTwoPlayerGameButtonFirstLine,
+                        LocaleKeys.startTwoPlayerGameButtonFirstLine.tr(),
                     buttonLabelSecondLine:
-                        translate.startAnyGameButtonSecondLine,
+                        LocaleKeys.startAnyGameButtonSecondLine.tr(),
                     onTapped: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => PlayerInputPhraseScreen()));

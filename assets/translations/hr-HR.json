@@ -1,0 +1,23 @@
+{
+  "exitGameContentMessage": "Nećeš valjda napustiti Mr. Hangmana?",
+  "exitGameCancelButton": "Nikad",
+  "exitGameOkButton": "Odlazim",
+  "quitGameContentMessage": "Ostavljaš Mr. Hangmana samog?",
+  "quitGameCancelButton": "Ne",
+  "quitGameOkButton": "Izbornik",
+  "startQuickGameButtonFirstLine": "BRZA",
+  "startTwoPlayerGameButtonFirstLine": "2 IGRAČA",
+  "startNewQuickGameButtonFirstLine": "NOVA BRZA",
+  "startNEWTwoPlayerGameButtonFirstLine": "NOVA 2 IGRAČA",
+  "startAnyGameButtonSecondLine": "IGRA",
+  "keyboardLanguage": "hr",
+  "mainMenuButtonFirstLine": "GLAVNI",
+  "mainMenuButtonSecondLine": "IZBORNIK",
+  "permittedCharacters": "[^a-zA-ZšŠđĐčČćĆžŽ !?,']",
+  "alertPermittedMessageTitle": "Dozvoljeno",
+  "alertPermittedMessageContent": "Abeceda: hrv\n!?',\nRazmak",
+  "alertPermittedMessageButton": "Razumijem",
+  "inputFieldMessage": "Upiši novi pojam za pogađanje",
+  "finishedGameFailMessage": "Nisi uspio spasiti Mr. Hangmana!",
+  "finishedGameSuccessMessage": "Oslobodio si Mr. Hangmana!"
+}
