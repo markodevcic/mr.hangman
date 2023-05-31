@@ -5,17 +5,12 @@ abstract class LocaleKeys {
   static const quitGameContentMessage = 'quitGameContentMessage';
   static const quitGameCancelButton = 'quitGameCancelButton';
   static const quitGameOkButton = 'quitGameOkButton';
-  static const startQuickGameButtonFirstLine = 'startQuickGameButtonFirstLine';
-  static const startTwoPlayerGameButtonFirstLine =
-      'startTwoPlayerGameButtonFirstLine';
-  static const startNewQuickGameButtonFirstLine =
-      'startNewQuickGameButtonFirstLine';
-  static const startNEWTwoPlayerGameButtonFirstLine =
-      'startNEWTwoPlayerGameButtonFirstLine';
-  static const startAnyGameButtonSecondLine = 'startAnyGameButtonSecondLine';
+  static const startQuickGameButton = 'startQuickGameButton';
+  static const startTwoPlayerGameButton = 'startTwoPlayerGameButton';
+  static const startNewQuickGameButton = 'startNewQuickGameButton';
+  static const startNEWTwoPlayerGameButton = 'startNEWTwoPlayerGameButton';
   static const keyboardLanguage = 'keyboardLanguage';
-  static const mainMenuButtonFirstLine = 'mainMenuButtonFirstLine';
-  static const mainMenuButtonSecondLine = 'mainMenuButtonSecondLine';
+  static const mainMenuButtonFirstLine = 'mainMenuButton';
   static const permittedCharacters = 'permittedCharacters';
   static const alertPermittedMessageTitle = 'alertPermittedMessageTitle';
   static const alertPermittedMessageContent = 'alertPermittedMessageContent';

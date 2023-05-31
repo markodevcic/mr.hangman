@@ -3,19 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../helpers/game_helper.dart';
-import '../screens/main_screen.dart';
+import '../utilities/locale_keys.dart';
 
 class StartGameButton extends StatelessWidget {
   StartGameButton({
-    required this.buttonLabelFirstLine,
-    required this.buttonLabelSecondLine,
+    required this.title,
     required this.onTapped,
   });
 
   final Function() onTapped;
-  final String buttonLabelFirstLine;
-  final String buttonLabelSecondLine;
-  final GameHelper gameHelper = GameHelper();
+  final String title;
+  final GamePlay gameHelper = GamePlay();
 
   @override
   Widget build(context) {
@@ -30,7 +28,7 @@ class StartGameButton extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 15),
           width: MediaQuery.of(context).size.width,
           child: Text(
-            '$buttonLabelFirstLine\n$buttonLabelSecondLine',
+            title,
             textAlign: TextAlign.center,
             style: GoogleFonts.pressStart2p(fontSize: 16, height: 1.5),
           ),
@@ -41,6 +39,10 @@ class StartGameButton extends StatelessWidget {
 }
 
 class BackToMainMenuButton extends StatelessWidget {
+  BackToMainMenuButton({this.leaveGame = false});
+
+  final bool leaveGame;
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -51,11 +53,20 @@ class BackToMainMenuButton extends StatelessWidget {
           Icons.home_rounded,
           color: Colors.grey.shade600,
         ),
-        onPressed: () {
-          Navigator.pushAndRemoveUntil(
+        onPressed: () async {
+          if (leaveGame) {
+            bool isLeaving = await ExitAlert.show(
               context,
-              MaterialPageRoute(builder: (context) => MainScreen()),
-              (route) => false);
+              LocaleKeys.quitGameContentMessage,
+              cancelButton: LocaleKeys.quitGameCancelButton,
+              okButton: LocaleKeys.quitGameOkButton,
+            );
+            if (isLeaving) {
+              Navigator.pop(context);
+            }
+          } else {
+            Navigator.pop(context);
+          }
         },
       ),
     );
@@ -80,9 +91,11 @@ class FinishedGameMessage extends StatelessWidget {
 }
 
 class ExitAlert {
-  static Future<bool> show(BuildContext context, String content, bool willLeave,
+  static Future<bool> show(BuildContext context, String content,
       {String cancelButton = '', String okButton = ''}) async {
-    return await showDialog(
+    bool willExit = false;
+
+    await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
@@ -97,7 +110,7 @@ class ExitAlert {
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Navigator.pop(context),
                 child: Text(
                   cancelButton,
                   style: GoogleFonts.pressStart2p(fontSize: 16),
@@ -109,23 +122,25 @@ class ExitAlert {
                   backgroundColor: Colors.red.shade600,
                 ),
                 onPressed: () {
-                  willLeave = true;
-                  Navigator.of(context).pop(willLeave);
+                  willExit = true;
+                  Navigator.pop(context);
                 },
                 child: Text(
                   okButton,
                   style: GoogleFonts.pressStart2p(fontSize: 16),
                 ).tr(),
-              )
+              ),
           ],
         );
       },
     );
+
+    return willExit;
   }
 }
 
-class ShowPhraseMeaning {
-  showAlertDialog(BuildContext context, String content) async {
+class PhraseMeaning {
+  static Future show(BuildContext context, String content) async {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -143,7 +158,7 @@ class ShowPhraseMeaning {
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Navigator.pop(context),
                 child: Text('Dismiss',
                     style: GoogleFonts.pressStart2p(fontSize: 16))),
           ],

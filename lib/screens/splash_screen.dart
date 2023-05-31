@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
-import 'package:hangman/screens/main_screen.dart';
+import 'package:hangman/screens/main/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -56,6 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _navigateToMainScreen() async {
     await Future.delayed(Duration(milliseconds: 3500));
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => MainScreen()));
   }
 }
