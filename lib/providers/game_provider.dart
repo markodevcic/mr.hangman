@@ -10,7 +10,7 @@ final gameProvider =
 class GameProvider extends StateNotifier<Game?> {
   GameProvider() : super(null);
 
-  void startGame(Game game) {
+  void createGame(Game game) {
     state = game;
   }
 

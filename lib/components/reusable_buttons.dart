@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hangman/utilities/extensions.dart';
 
-import '../helpers/game_helper.dart';
+import '../providers/game_provider.dart';
 import '../utilities/locale_keys.dart';
 
 class StartGameButton extends StatelessWidget {
@@ -46,12 +47,13 @@ class BackToMainMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: 10,
+      left: 20,
       top: 10,
       child: IconButton(
         icon: Icon(
           Icons.home_rounded,
           color: Colors.grey.shade600,
+          size: 30,
         ),
         onPressed: () async {
           if (leaveGame) {
@@ -62,10 +64,10 @@ class BackToMainMenuButton extends StatelessWidget {
               okButton: LocaleKeys.quitGameOkButton,
             );
             if (isLeaving) {
-              Navigator.pop(context);
+              context.pop();
             }
           } else {
-            Navigator.pop(context);
+            context.pop();
           }
         },
       ),
@@ -110,7 +112,7 @@ class ExitAlert {
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
                 ),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 child: Text(
                   cancelButton,
                   style: GoogleFonts.pressStart2p(fontSize: 16),
@@ -123,7 +125,7 @@ class ExitAlert {
                 ),
                 onPressed: () {
                   willExit = true;
-                  Navigator.pop(context);
+                  context.pop();
                 },
                 child: Text(
                   okButton,
@@ -158,7 +160,7 @@ class PhraseMeaning {
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
                 ),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 child: Text('Dismiss',
                     style: GoogleFonts.pressStart2p(fontSize: 16))),
           ],

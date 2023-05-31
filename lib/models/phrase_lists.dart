@@ -81,4 +81,78 @@ List phraseList = [
     'On the Same Page',
     'Thinking alike or understanding something in a similar way with others'
   ],
+  [
+    'The best of both worlds',
+    'A situation wherein someone gets the benefits of two different opportunities'
+  ],
+  [
+    'Once in a blue moon',
+    'Something that happens very rarely, an event that occurs infrequently'
+  ],
+  [
+    'When pigs fly',
+    'Something that will never ever happen, something that\'s impossible'
+  ],
+  [
+    'To cost an arm and a leg',
+    'Something that\'s very expensive, an idiom that means to spend a lot of money'
+  ],
+  [
+    'Let the cat out of the bag',
+    'To share information that was previously concealed or to reveal a secret'
+  ],
+  ['To feel under the weather', 'To not feel well or to feel tired'],
+  ['Beat around the bush', 'To avoid talking about what’s important'],
+  ['Get your act together', 'Get organized and do things effectively'],
+  [
+    'Good things come to those who wait',
+    'To be patient, eventually something good will happen to you'
+  ],
+  ['Back against the wall', 'Stuck in a difficult circumstance with no escape'],
+  [
+    'Burn your bridges',
+    'Doing something that makes it impossible to go back to the original state'
+  ],
+  [
+    'Run around in circles',
+    'Putting efforts into something that is not a worthwhile result'
+  ],
+  [
+    'Left out in the cold',
+    'To be ignored, neglected or excluded from something'
+  ],
+  [
+    'Blow hot and cold',
+    'To keep changing your opinion or mood about something'
+  ],
+  ['Keep an ear to the ground', 'To be aware of what\'s happening'],
+  [
+    'Every cloud has a silver lining',
+    'Be optimistic, even difficult times will lead to better days'
+  ],
+  [
+    'Having an Ace up the sleeve',
+    'Having a secret advantage or a hidden resource'
+  ],
+  [
+    'Hook, line and sinker',
+    'Doing something or trying to achieve something with thoroughness and passion'
+  ],
+  [
+    'By the skin of your teeth',
+    'To just barely get by, to only just succeed at something'
+  ],
+  [
+    'Down for the count',
+    'Someone or something that looks to be defeated, or unlikely to recover'
+  ],
+  [
+    'Snug as a bug in a rug',
+    'To be very comfortable or cozy in a particular place or situation'
+  ],
+  [
+    'Look before you leap',
+    'To think carefully about the possible results or consequences before doing something'
+  ],
+  ['Play devil\'s advocate', 'To argue, just for the sake of it']
 ];

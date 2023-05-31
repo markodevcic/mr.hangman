@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hangman/models/keyboard.dart';
 
-import '../helpers/game_helper.dart';
+import '../providers/game_provider.dart';
 import 'phrase_lists.dart';
 
 enum GameType { quick, twoPlayer }

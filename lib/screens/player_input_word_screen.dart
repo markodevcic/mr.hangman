@@ -4,8 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hangman/components/reusable_buttons.dart';
 import 'package:hangman/global_widgets/app_scaffold.dart';
-import 'package:hangman/helpers/game_helper.dart';
+import 'package:hangman/providers/game_provider.dart';
 import 'package:hangman/screens/game/game_on_screen.dart';
+import 'package:hangman/utilities/extensions.dart';
 import 'package:hangman/utilities/locale_keys.dart';
 
 import '../models/game.dart';
@@ -59,7 +60,7 @@ class PlayerInputPhraseScreen extends ConsumerWidget {
                                   ),
                                   onPressed: () {
                                     controller.clear();
-                                    Navigator.of(context).pop();
+                                    context.pop();
                                   },
                                   child: Text(
                                     LocaleKeys.alertPermittedMessageButton,
@@ -70,15 +71,10 @@ class PlayerInputPhraseScreen extends ConsumerWidget {
                               ],
                             ));
                   } else {
-                    ref.read(gameProvider.notifier).startGame(
+                    ref.read(gameProvider.notifier).createGame(
                         Game.twoPlayer(context, value.toUpperCase()));
 
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GameOnScreen(),
-                      ),
-                    );
+                    context.pushReplacement(GameOnScreen());
                   }
                 },
                 style: GoogleFonts.pressStart2p(),

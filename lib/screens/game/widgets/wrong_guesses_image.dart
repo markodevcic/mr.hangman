@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../helpers/game_helper.dart';
+import '../../../providers/game_provider.dart';
 import '../../../models/game.dart';
 
 class WrongGuessesImage extends ConsumerWidget {

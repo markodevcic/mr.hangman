@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../helpers/game_helper.dart';
+import '../../../providers/game_provider.dart';
 
 class Keyboard extends ConsumerWidget {
   const Keyboard({Key? key}) : super(key: key);
@@ -10,7 +10,6 @@ class Keyboard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final game = ref.read(gameProvider)!;
-    final watchGame = ref.watch(gameProvider)!;
 
     return Padding(
       padding: EdgeInsets.only(top: 30),

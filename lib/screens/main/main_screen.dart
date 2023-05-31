@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hangman/components/reusable_buttons.dart';
 import 'package:hangman/global_widgets/app_scaffold.dart';
-import 'package:hangman/helpers/game_helper.dart';
+import 'package:hangman/providers/game_provider.dart';
 import 'package:hangman/screens/game/game_on_screen.dart';
 import 'package:hangman/screens/main/widgets/hangman_logo.dart';
 import 'package:hangman/screens/main/widgets/language_button.dart';
 import 'package:hangman/screens/main/widgets/message_looper.dart';
 import 'package:hangman/screens/player_input_word_screen.dart';
+import 'package:hangman/utilities/extensions.dart';
 import 'package:hangman/utilities/locale_keys.dart';
 
 import '../../models/game.dart';
@@ -37,20 +38,14 @@ class MainScreen extends ConsumerWidget {
             StartGameButton(
               title: LocaleKeys.startQuickGameButton.tr(),
               onTapped: () {
-                ref.read(gameProvider.notifier).startGame(Game.quick(context));
+                ref.read(gameProvider.notifier).createGame(Game.quick(context));
 
-                Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return GameOnScreen();
-                }));
+                context.push(GameOnScreen());
               },
             ),
             StartGameButton(
               title: LocaleKeys.startTwoPlayerGameButton.tr(),
-              onTapped: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return PlayerInputPhraseScreen();
-                }));
-              },
+              onTapped: () => context.push(PlayerInputPhraseScreen()),
             ),
           ],
         ),

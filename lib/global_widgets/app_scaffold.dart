@@ -7,12 +7,12 @@ class AppScaffold extends StatelessWidget {
   const AppScaffold(
       {Key? key,
       required this.child,
-      required this.topButton,
+      this.topButton,
       this.backButtonQuitsGame = false})
       : super(key: key);
 
   final Widget child;
-  final Widget topButton;
+  final Widget? topButton;
   final bool backButtonQuitsGame;
 
   @override
@@ -40,7 +40,7 @@ class AppScaffold extends StatelessWidget {
             child: Stack(
               children: [
                 child,
-                topButton,
+                if (topButton != null) topButton!,
               ],
             ),
           ),

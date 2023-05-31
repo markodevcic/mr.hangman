@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hangman/components/reusable_buttons.dart';
 import 'package:hangman/global_widgets/app_scaffold.dart';
-import 'package:hangman/helpers/game_helper.dart';
+import 'package:hangman/providers/game_provider.dart';
 import 'package:hangman/screens/game/widgets/keyboard.dart';
 import 'package:hangman/screens/game/widgets/phrase.dart';
 import 'package:hangman/screens/game/widgets/wrong_guesses_image.dart';
 import 'package:hangman/screens/player_input_word_screen.dart';
+import 'package:hangman/utilities/extensions.dart';
 import 'package:hangman/utilities/locale_keys.dart';
 
 import '../../models/game.dart';
@@ -52,28 +53,17 @@ class _GameOnScreenState extends ConsumerState<GameOnScreen> {
                             ? () {
                                 ref
                                     .read(gameProvider.notifier)
-                                    .startGame(Game.quick(context));
+                                    .createGame(Game.quick(context));
 
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => GameOnScreen(),
-                                  ),
-                                );
+                                context.pushReplacement(GameOnScreen());
                               }
-                            : () => Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PlayerInputPhraseScreen(),
-                                  ),
+                            : () => context.pushReplacement(
+                                  PlayerInputPhraseScreen(),
                                 ),
                       ),
                       StartGameButton(
                         title: LocaleKeys.mainMenuButtonFirstLine.tr(),
-                        onTapped: () {
-                          Navigator.pop(context);
-                        },
+                        onTapped: () => context.pop(),
                       ),
                     ],
                   ),
