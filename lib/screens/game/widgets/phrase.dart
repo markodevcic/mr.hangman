@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hangman/global_widgets/reusable_buttons.dart';
+import 'package:hangman/providers/game_provider.dart';
 
-import '../../../components/reusable_buttons.dart';
-import '../../../models/game.dart';
-
-class Phrase extends StatelessWidget {
-  const Phrase({Key? key, required this.game}) : super(key: key);
-
-  final Game game;
+class Phrase extends ConsumerWidget {
+  const Phrase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final game = ref.watch(gameProvider)!;
+
     return Stack(
       alignment: Alignment.center,
       children: [

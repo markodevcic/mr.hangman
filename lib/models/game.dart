@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hangman/models/game_status.dart';
+import 'package:hangman/models/game_type.dart';
 import 'package:hangman/models/keyboard.dart';
-
-import '../providers/game_provider.dart';
-import 'phrase_lists.dart';
-
-enum GameType { quick, twoPlayer }
-
-enum GameStatus { won, lost, playing }
+import 'package:hangman/models/phrase_lists.dart';
+import 'package:hangman/providers/game_provider.dart';
 
 class Game {
   Game({
@@ -48,9 +45,9 @@ class Game {
     String hiddenPhrase = GamePlay.hidePhrase(phrase);
 
     return Game(
-      type: GameType.quick,
-      status: GameStatus.playing,
-      keyboard: Keyboard.create(context),
+      type: GameType.quick(),
+      status: GameStatus.playing(),
+      keyboard: Keyboard.create(),
       disabledKeyboardLetters: [],
       guessesLeft: 5,
       phrase: phrase,
@@ -63,9 +60,9 @@ class Game {
     String hiddenPhrase = GamePlay.hidePhrase(phrase);
 
     return Game(
-      type: GameType.twoPlayer,
-      status: GameStatus.playing,
-      keyboard: Keyboard.create(context),
+      type: GameType.twoPlayer(),
+      status: GameStatus.playing(),
+      keyboard: Keyboard.create(),
       disabledKeyboardLetters: [],
       guessesLeft: 5,
       phrase: phrase,

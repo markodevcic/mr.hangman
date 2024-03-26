@@ -1,13 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import '../../../providers/game_provider.dart';
-import '../../../utilities/locale_keys.dart';
-import '../constants.dart';
+import 'package:hangman/providers/game_provider.dart';
+import 'package:hangman/screens/main/constants.dart';
+import 'package:hangman/utilities/locale_keys.dart';
 
 class MessageLooper extends StatefulWidget {
-  const MessageLooper({Key? key}) : super(key: key);
+  const MessageLooper({super.key});
 
   @override
   State<MessageLooper> createState() => _MessageLooperState();
@@ -45,7 +43,7 @@ class _MessageLooperState extends State<MessageLooper> {
               alignment: Alignment.center,
               child: Text(
                 mainScreenMessage,
-                style: GoogleFonts.pressStart2p(fontSize: 18, height: 1.5),
+                style: TextStyle(fontSize: 18, height: 1.5),
                 textAlign: TextAlign.center,
               ),
             ),

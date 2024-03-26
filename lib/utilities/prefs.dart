@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Prefs {
@@ -7,7 +5,7 @@ class Prefs {
 
   static late SharedPreferences _instance;
 
-  static initializePrefs() async {
+  static init() async {
     _instance = await SharedPreferences.getInstance();
   }
 
@@ -16,7 +14,15 @@ class Prefs {
   }
 
   static String loadLanguage() {
-    return _instance.getString('language') ?? Platform.localeName;
+    return _instance.getString('language')!;
+  }
+
+  static Future saveDifficulty(String difficulty) async {
+    await _instance.setString('difficulty', difficulty);
+  }
+
+  static String loadDifficulty() {
+    return _instance.getString('difficulty') ?? 'easy';
   }
 
   static clear() {

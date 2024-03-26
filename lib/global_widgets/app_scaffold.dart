@@ -1,46 +1,57 @@
 import 'package:flutter/material.dart';
-
-import '../components/reusable_buttons.dart';
-import '../utilities/locale_keys.dart';
+import 'package:hangman/global_widgets/reusable_buttons.dart';
+import 'package:hangman/utilities/locale_keys.dart';
 
 class AppScaffold extends StatelessWidget {
-  const AppScaffold(
-      {Key? key,
-      required this.child,
-      this.topButton,
-      this.backButtonQuitsGame = false})
-      : super(key: key);
+  const AppScaffold({
+    super.key,
+    required this.child,
+    this.title,
+    this.topButton,
+    this.backButtonQuitsGame = false,
+  });
 
   final Widget child;
+  final Widget? title;
   final Widget? topButton;
   final bool backButtonQuitsGame;
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return await ExitAlert.show(
-          context,
-          backButtonQuitsGame
-              ? LocaleKeys.quitGameContentMessage
-              : LocaleKeys.exitGameContentMessage,
-          cancelButton: backButtonQuitsGame
-              ? LocaleKeys.quitGameCancelButton
-              : LocaleKeys.exitGameCancelButton,
-          okButton: backButtonQuitsGame
-              ? LocaleKeys.quitGameOkButton
-              : LocaleKeys.exitGameOkButton,
-        );
+    return PopScope(
+      onPopInvoked: (canPop) async {
+        if (!canPop) {
+          await ExitAlert.show(
+            context,
+            backButtonQuitsGame
+                ? LocaleKeys.quitGameContentMessage
+                : LocaleKeys.exitGameContentMessage,
+            cancelButton: backButtonQuitsGame
+                ? LocaleKeys.quitGameCancelButton
+                : LocaleKeys.exitGameCancelButton,
+            okButton: backButtonQuitsGame
+                ? LocaleKeys.quitGameOkButton
+                : LocaleKeys.exitGameOkButton,
+          );
+        }
       },
       child: Container(
         decoration: kBackgroundImage,
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: SafeArea(
-            child: Stack(
+            child: Column(
               children: [
-                child,
-                if (topButton != null) topButton!,
+                if (title != null) title!,
+                Expanded(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      child,
+                      if (topButton != null) topButton!,
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

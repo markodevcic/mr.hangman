@@ -1,11 +1,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:hangman/global_widgets/app_scaffold.dart';
+import 'package:hangman/screens/main/main_screen.dart';
 import 'package:hangman/utilities/extensions.dart';
-
-import '../global_widgets/app_scaffold.dart';
-import 'main/main_screen.dart';
 
 class SelectLanguageScreen extends StatefulWidget {
   const SelectLanguageScreen({Key? key}) : super(key: key);
@@ -58,7 +56,7 @@ class _SelectLanguageScreenState extends State<SelectLanguageScreen> {
                       ' Mr. Hangman',
                       speed: Duration(milliseconds: 240),
                       curve: Curves.fastOutSlowIn,
-                      textStyle: GoogleFonts.pressStart2p(fontSize: 28),
+                      textStyle: TextStyle(fontSize: 28),
                     ),
                   ],
                 ),
@@ -85,22 +83,20 @@ class _SelectLanguageScreenState extends State<SelectLanguageScreen> {
                       context.pushReplacement(MainScreen());
                     }
                   },
-                  child: Text('EN',
-                      style: GoogleFonts.pressStart2p(color: Colors.white)),
+                  child: Text('EN'),
                 ),
                 MaterialButton(
                   onPressed: () {
                     setState(() {
                       context.setLocale(Locale('hr', 'HR'));
                     });
-                    if (Navigator.canPop(context)) {
+                    if (context.canPop()) {
                       context.pop();
                     } else {
                       context.pushReplacement(MainScreen());
                     }
                   },
-                  child: Text('HR',
-                      style: GoogleFonts.pressStart2p(color: Colors.white)),
+                  child: Text('HR'),
                 ),
               ],
             ),

@@ -18,4 +18,7 @@ abstract class LocaleKeys {
   static const inputFieldMessage = 'inputFieldMessage';
   static const finishedGameFailMessage = 'finishedGameFailMessage';
   static const finishedGameSuccessMessage = 'finishedGameSuccessMessage';
+  static const settingsScreenTitle = 'settingsScreenTitle';
+  static const settingsScreenBackButton = 'settingsScreenBackButton';
+  static const settingsLanguageTitle = 'settingsLanguageTitle';
 }

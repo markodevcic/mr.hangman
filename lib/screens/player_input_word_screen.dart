@@ -2,14 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hangman/components/reusable_buttons.dart';
+import 'package:hangman/global_widgets/reusable_buttons.dart';
 import 'package:hangman/global_widgets/app_scaffold.dart';
+import 'package:hangman/models/game.dart';
 import 'package:hangman/providers/game_provider.dart';
 import 'package:hangman/screens/game/game_on_screen.dart';
 import 'package:hangman/utilities/extensions.dart';
 import 'package:hangman/utilities/locale_keys.dart';
-
-import '../models/game.dart';
 
 class PlayerInputPhraseScreen extends ConsumerWidget {
   final TextEditingController controller = TextEditingController();
@@ -42,34 +41,34 @@ class PlayerInputPhraseScreen extends ConsumerWidget {
                       value.contains(
                           RegExp(LocaleKeys.permittedCharacters.tr()))) {
                     showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                              title: Text(
-                                LocaleKeys.alertPermittedMessageTitle,
-                                style: GoogleFonts.pressStart2p(fontSize: 16),
-                              ).tr(),
-                              content: Text(
-                                LocaleKeys.alertPermittedMessageContent,
-                                style: GoogleFonts.pressStart2p(
-                                    fontSize: 16, height: 1.5),
-                              ).tr(),
-                              actions: [
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    foregroundColor: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    controller.clear();
-                                    context.pop();
-                                  },
-                                  child: Text(
-                                    LocaleKeys.alertPermittedMessageButton,
-                                    style:
-                                        GoogleFonts.pressStart2p(fontSize: 16),
-                                  ).tr(),
-                                ),
-                              ],
-                            ));
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: Text(
+                          LocaleKeys.alertPermittedMessageTitle,
+                          style: GoogleFonts.pressStart2p(fontSize: 16),
+                        ).tr(),
+                        content: Text(
+                          LocaleKeys.alertPermittedMessageContent,
+                          style: GoogleFonts.pressStart2p(
+                              fontSize: 16, height: 1.5),
+                        ).tr(),
+                        actions: [
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.white,
+                            ),
+                            onPressed: () {
+                              controller.clear();
+                              context.pop();
+                            },
+                            child: Text(
+                              LocaleKeys.alertPermittedMessageButton,
+                              style: GoogleFonts.pressStart2p(fontSize: 16),
+                            ).tr(),
+                          ),
+                        ],
+                      ),
+                    );
                   } else {
                     ref.read(gameProvider.notifier).createGame(
                         Game.twoPlayer(context, value.toUpperCase()));

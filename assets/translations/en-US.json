@@ -17,5 +17,8 @@
   "alertPermittedMessageButton": "Got it",
   "inputFieldMessage": "Type new phrase to guess",
   "finishedGameFailMessage": "You failed to save Mr. Hangman!",
-  "finishedGameSuccessMessage": "You set Mr. Hangman free!"
+  "finishedGameSuccessMessage": "You set Mr. Hangman free!",
+  "settingsScreenTitle": "Settings",
+  "settingsScreenBackButton": "Go Back",
+  "settingsLanguageTitle": "Language"
 }

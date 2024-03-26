@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../models/game.dart';
+import 'package:hangman/models/game.dart';
+import 'package:hangman/models/game_status.dart';
 
 final gameProvider =
     StateNotifierProvider<GameProvider, Game?>((_) => GameProvider());
@@ -40,21 +38,19 @@ class GamePlay {
 
     gameNotifier.addDisabledKeyboardLetter(char);
 
-    log('hidden phrase: ${game.hiddenPhrase}');
-
     if (game.phrase.contains(char)) {
       final hiddenPhrase =
           revealHiddenPhrase(game.hiddenPhrase, game.phrase, char);
       gameNotifier.setHiddenPhrase(hiddenPhrase);
 
       if (ref.read(gameProvider)!.hiddenPhrase == game.phrase) {
-        gameNotifier.setGameStatus(GameStatus.won);
+        gameNotifier.setGameStatus(GameStatus.won());
       }
     } else {
       gameNotifier.decreaseGuessesLeft();
 
       if (ref.read(gameProvider)!.guessesLeft < 0) {
-        gameNotifier.setGameStatus(GameStatus.lost);
+        gameNotifier.setGameStatus(GameStatus.lost());
       }
     }
   }

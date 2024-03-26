@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hangman/screens/select_language_screen.dart';
-import 'package:hangman/utilities/prefs.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hangman/screens/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +16,6 @@ void main() async {
   );
 
   await EasyLocalization.ensureInitialized();
-  await Prefs.initializePrefs();
 
   runApp(
     ProviderScope(
@@ -43,8 +42,12 @@ class StartHangman extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      theme: ThemeData.dark(),
-      home: SelectLanguageScreen(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        fontFamily: GoogleFonts.pressStart2p().fontFamily,
+        splashFactory: NoSplash.splashFactory,
+      ),
+      home: SplashScreen(),
     );
   }
 }

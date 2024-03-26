@@ -17,5 +17,8 @@
   "alertPermittedMessageButton": "Razumijem",
   "inputFieldMessage": "Upiši novi pojam za pogađanje",
   "finishedGameFailMessage": "Nisi uspio spasiti Mr. Hangmana!",
-  "finishedGameSuccessMessage": "Oslobodio si Mr. Hangmana!"
+  "finishedGameSuccessMessage": "Oslobodio si Mr. Hangmana!",
+  "settingsScreenTitle": "Postavke",
+  "settingsScreenBackButton": "Natrag",
+  "settingsLanguageTitle": "Jezik"
 }

@@ -2,19 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hangman/utilities/extensions.dart';
+import 'package:hangman/utilities/locale_keys.dart';
 
-import '../providers/game_provider.dart';
-import '../utilities/locale_keys.dart';
-
-class StartGameButton extends StatelessWidget {
-  StartGameButton({
+class AppButton extends StatelessWidget {
+  AppButton({
     required this.title,
-    required this.onTapped,
+    required this.onTap,
   });
 
-  final Function() onTapped;
+  final Function() onTap;
   final String title;
-  final GamePlay gameHelper = GamePlay();
 
   @override
   Widget build(context) {
@@ -24,15 +21,15 @@ class StartGameButton extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: InkWell(
         borderRadius: BorderRadius.circular(15),
-        onTap: onTapped,
+        onTap: onTap,
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 15),
           width: MediaQuery.of(context).size.width,
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: GoogleFonts.pressStart2p(fontSize: 16, height: 1.5),
-          ),
+            style: TextStyle(fontSize: 16, height: 1.5),
+          ).tr(),
         ),
       ),
     );
@@ -75,8 +72,8 @@ class BackToMainMenuButton extends StatelessWidget {
   }
 }
 
-class FinishedGameMessage extends StatelessWidget {
-  const FinishedGameMessage({required this.message});
+class GameOverMessage extends StatelessWidget {
+  const GameOverMessage({required this.message});
 
   final String message;
 
@@ -161,8 +158,8 @@ class PhraseMeaning {
                   foregroundColor: Colors.white,
                 ),
                 onPressed: () => context.pop(),
-                child: Text('Dismiss',
-                    style: GoogleFonts.pressStart2p(fontSize: 16))),
+                child:
+                    Text('OK', style: GoogleFonts.pressStart2p(fontSize: 16))),
           ],
         );
       },

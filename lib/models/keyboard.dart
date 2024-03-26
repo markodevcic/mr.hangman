@@ -1,8 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:hangman/utilities/prefs.dart';
 
 class Keyboard {
-  static Map keyboard = {
+  Keyboard._();
+
+  static Map _keyboard = {
     'en': [
       ['Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O', 'P'],
       ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
@@ -15,6 +16,5 @@ class Keyboard {
     ]
   };
 
-  static List<List<String>> create(BuildContext context) =>
-      keyboard[context.locale.languageCode];
+  static List<List<String>> create() => _keyboard[Prefs.loadLanguage()];
 }
